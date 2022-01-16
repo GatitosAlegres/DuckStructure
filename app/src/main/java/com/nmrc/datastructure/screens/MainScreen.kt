@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.nmrc.datastructure.R
 import com.nmrc.datastructure.components.CardX
+import com.nmrc.datastructure.components.Header
 import com.nmrc.datastructure.ui.theme.BlueMaterial
 import com.nmrc.datastructure.ui.theme.GrayMaterial
 
@@ -70,26 +71,9 @@ fun MainScreen(navController: NavHostController) {
                         }
                     }
 
-                    Text(
-                        text = "Estructura de Datos Orientado a Objetos",
-                        modifier = Modifier.padding(16.dp),
-                        style = TextStyle(
-                            fontSize = 30.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = BlueMaterial
-                        )
-                    )
-
-
-
-                    Text(
-                        text = "Una coleccion de estructura de datos para experiemntar en tiempo real.",
-                        modifier = Modifier.padding(16.dp),
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            color = BlueMaterial
-                        )
-                    )
+                    Header(
+                        title = "Estructura de Datos Orientado a Objetos",
+                        subtitle = "Una coleccion de estructura de datos para experimentar en tiempo real.")
 
                     LazyRow(
                         content = {
@@ -128,7 +112,7 @@ fun MainScreen(navController: NavHostController) {
                                 Divider(modifier = Modifier.padding(16.dp))
 
                                 CardX(
-                                    title = "Arboles",
+                                    title = "Arboles Binarios",
                                     painter = painterResource(id = R.drawable.list),
                                     description = "Pruebe creando clases arbitrarias y almacenandolas en Listas Enlazadas por Nodos",
                                     onDetail = {}) {
