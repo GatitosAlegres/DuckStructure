@@ -5,7 +5,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.runtime.Composable
@@ -47,7 +46,7 @@ fun CardX(
         },
         detailContent = {
 
-            ActionIconButtom(
+            ActionIconBottom(
                 icon = Icons.Rounded.Info,
                 tint = Color.Green,
                 content = "",
@@ -56,7 +55,7 @@ fun CardX(
         },
         actionContent = {
 
-            ActionIconButtom(
+            ActionIconBottom(
                 icon = Icons.Outlined.PlayArrow,
                 tint = Color.Blue,
                 content = "Go",

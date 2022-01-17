@@ -10,10 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ActionIconButtom(
+fun ActionIconBottom(
     modifier: Modifier = Modifier,
     icon: ImageVector,
     tint: Color,
@@ -30,7 +31,8 @@ fun ActionIconButtom(
         onClick = onClick
     ) {
         Text(
-            text = content
+            text = content,
+            style = TextStyle(color = tint)
         )
 
         Icon(

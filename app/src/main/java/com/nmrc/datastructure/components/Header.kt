@@ -13,12 +13,13 @@ import com.nmrc.datastructure.ui.theme.BlueMaterial
 
 @Composable
 fun Header(
+    modifier: Modifier = Modifier,
     title: String,
     subtitle: String,
     color: Color = BlueMaterial) {
     Text(
         text = title,
-        modifier = Modifier.padding(16.dp),
+        modifier = modifier.padding(16.dp),
         style = TextStyle(
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
