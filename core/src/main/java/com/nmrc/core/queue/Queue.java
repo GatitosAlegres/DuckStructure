@@ -134,7 +134,6 @@ public class Queue<E> extends Structure<E> {
         return first == null;
     }
 
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

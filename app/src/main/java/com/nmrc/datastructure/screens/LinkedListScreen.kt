@@ -24,7 +24,7 @@ import androidx.navigation.NavHostController
 import com.nmrc.datastructure.components.ActionIconBottom
 import com.nmrc.datastructure.components.DropDownMenu
 import com.nmrc.datastructure.components.Header
-import com.nmrc.datastructure.model.Alumno
+import com.nmrc.datastructure.model.Doctor
 import com.nmrc.datastructure.ui.theme.BlueMaterial
 import com.nmrc.datastructure.ui.theme.GreenDarkMaterial
 import com.nmrc.datastructure.ui.theme.Purple500
@@ -37,7 +37,7 @@ fun LinkedListScreen(
     navController: NavHostController,
     isDark: Boolean = isSystemInDarkTheme(),
     viewModel: LListViewModel = viewModel()
-    ) {
+) {
 
     val state = rememberBottomSheetScaffoldState()
     val color = if (isDark) Color(0xFF455A64) else Purple500
@@ -46,8 +46,8 @@ fun LinkedListScreen(
     var apellidos by remember { mutableStateOf("") }
     var edad by remember { mutableStateOf(0) }
     var gender by remember { mutableStateOf('m') }
-    var promedioP by remember { mutableStateOf(0f) }
-    var creditos by remember { mutableStateOf(0) }
+    var yearsOfService by remember { mutableStateOf(0) }
+    var specialty by remember { mutableStateOf("") }
 
     val alumnos = viewModel.list.value
 
@@ -75,10 +75,10 @@ fun LinkedListScreen(
                     )
                 }
 
-                Header(title = "Listas Ligadas", subtitle = "")
+                Header(title = "Listas Ligadas", subtitle = "Doctores")
 
 
-                
+
                 OutlinedTextField(
                     value = nombre,
                     onValueChange = {
@@ -129,13 +129,13 @@ fun LinkedListScreen(
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number
                         ),
-                        value = promedioP.toString(),
+                        value = yearsOfService.toString(),
                         onValueChange = {
-                            promedioP = if (it.isNotEmpty())
-                                it.toFloat()
-                            else 0f
+                            yearsOfService = if (it.isNotEmpty())
+                                it.toInt()
+                            else 0
                         }, label = {
-                            Text(text = "Ponderado")
+                            Text(text = "Años de Servicio")
                         })
 
                     Spacer(modifier = Modifier.width(16.dp))
@@ -143,16 +143,11 @@ fun LinkedListScreen(
                     OutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth(0.5f),
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number
-                        ),
-                        value = creditos.toString(),
+                        value = specialty.toString(),
                         onValueChange = {
-                            creditos = if (it.isNotEmpty())
-                                it.toInt()
-                            else 0
+                            specialty = it
                         }, label = {
-                            Text(text = "Creditos")
+                            Text(text = "Especialidad")
                         })
                 }
 
@@ -171,8 +166,8 @@ fun LinkedListScreen(
                             apellidos = ""
                             edad = 0
                             gender = 'm'
-                            promedioP = 0f
-                            creditos = 0
+                            yearsOfService = 0
+                            specialty = ""
                         }
                     )
 
@@ -181,13 +176,16 @@ fun LinkedListScreen(
                         tint = GreenDarkMaterial,
                         content = "Agregar",
                         onClick = {
-                            viewModel.add(Alumno(
-                                nombre,
-                                apellidos,
-                                edad,
-                                gender,
-                                promedioP,
-                                creditos))
+                            viewModel.add(
+                                Doctor(
+                                    nombre,
+                                    apellidos,
+                                    edad,
+                                    gender,
+                                    yearsOfService,
+                                    specialty
+                                )
+                            )
                             viewModel.hasBeenAdded()
                         }
                     )
@@ -196,74 +194,76 @@ fun LinkedListScreen(
         }
 
     }, sheetContent = {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-            ) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
 
-                item {
+            item {
 
-                    Box(
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                    contentAlignment = Center
+                ) {
+                    Divider(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 8.dp),
-                        contentAlignment = Center
-                    ) {
-                        Divider(
-                            modifier = Modifier
-                                .fillMaxWidth(0.5f)
-                                .width(8.dp)
-                                .height(8.dp)
-                                .clip(CircleShape)
-                                .padding(0.dp)
-                        )
-                    }
-
-                    Header(
-                        title = "Contar",
-                        subtitle = "Seleccione el caso de uso",
-                        color = MaterialTheme.colors.onPrimary
+                            .fillMaxWidth(0.5f)
+                            .width(8.dp)
+                            .height(8.dp)
+                            .clip(CircleShape)
+                            .padding(0.dp)
                     )
-
-                    Header(
-                        title = "Filtrar",
-                        subtitle = "Seleccione el caso de uso",
-                        color = MaterialTheme.colors.onPrimary
-                    )
-
-                    Header(
-                        title = "Ordenar",
-                        subtitle = "Seleccione el caso de uso",
-                        color = MaterialTheme.colors.onPrimary
-                    )
-
-                    Header(
-                        title = "Modificar Campos",
-                        subtitle = "Seleccione el caso de uso",
-                        color = MaterialTheme.colors.onPrimary
-                    )
-
-                    Header(
-                        title = "Reducir",
-                        subtitle = "Seleccione el caso de uso",
-                        color = MaterialTheme.colors.onPrimary
-                    )
-
-                    Header(
-                        title = "RESULTADO",
-                        subtitle = "",
-                        color = MaterialTheme.colors.onPrimary
-                    )
-                    Text(
-                        text = "Total : ${viewModel.count.value}",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(end = 16.dp),
-                        textAlign = TextAlign.End)
-                    Text(text = viewModel.list.value.toString())
                 }
+
+                Header(
+                    title = "Contar",
+                    subtitle = "Seleccione el caso de uso",
+                    color = MaterialTheme.colors.onPrimary
+                )
+
+                Header(
+                    title = "Filtrar",
+                    subtitle = "Seleccione el caso de uso",
+                    color = MaterialTheme.colors.onPrimary
+                )
+
+                Header(
+                    title = "Ordenar",
+                    subtitle = "Seleccione el caso de uso",
+                    color = MaterialTheme.colors.onPrimary
+                )
+
+                Header(
+                    title = "Modificar Campos",
+                    subtitle = "Seleccione el caso de uso",
+                    color = MaterialTheme.colors.onPrimary
+                )
+
+                Header(
+                    title = "Reducir",
+                    subtitle = "Seleccione el caso de uso",
+                    color = MaterialTheme.colors.onPrimary
+                )
+
+                Header(
+                    title = "RESULTADO",
+                    subtitle = "",
+                    color = MaterialTheme.colors.onPrimary
+                )
+                Text(
+                    text = "Total : ${viewModel.count.value}",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 16.dp),
+                    textAlign = TextAlign.End
+                )
+
+                Text(text = viewModel.list.value.toString())
             }
+        }
 
 
     }, scaffoldState = state,

@@ -1,6 +1,6 @@
 package com.nmrc.datastructure.model;
 
-public class Alumno extends Persona {
+public class Alumno extends Person {
 
     private float promedioP;
     private int creditos;
@@ -37,10 +37,10 @@ public class Alumno extends Persona {
         return "Alumno{" +
                 "promedioP=" + promedioP +
                 ", creditos=" + creditos +
-                ", nombre='" + nombre + '\'' +
-                ", apellidos='" + apellidos + '\'' +
-                ", edad=" + edad +
-                ", sexo=" + sexo +
+                ", nombre='" + firstName + '\'' +
+                ", apellidos='" + lastName + '\'' +
+                ", edad=" + age +
+                ", sexo=" + gender +
                 '}';
     }
 }
