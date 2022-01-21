@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nmrc.datastructure.components.ActionIconBottom
+import com.nmrc.datastructure.components.DoctorCard
 import com.nmrc.datastructure.components.DropDownMenu
 import com.nmrc.datastructure.components.Header
 import com.nmrc.datastructure.model.Doctor
@@ -42,14 +43,14 @@ fun LinkedListScreen(
     val state = rememberBottomSheetScaffoldState()
     val color = if (isDark) Color(0xFF455A64) else Purple500
 
-    var nombre by remember { mutableStateOf("") }
-    var apellidos by remember { mutableStateOf("") }
-    var edad by remember { mutableStateOf(0) }
+    var firstName by remember { mutableStateOf("") }
+    var lastName by remember { mutableStateOf("") }
+    var age by remember { mutableStateOf(0) }
     var gender by remember { mutableStateOf('m') }
     var yearsOfService by remember { mutableStateOf(0) }
     var specialty by remember { mutableStateOf("") }
 
-    val alumnos = viewModel.list.value
+
 
     BottomSheetScaffold(modifier = Modifier.fillMaxSize(), content = {
         LazyColumn(
@@ -80,17 +81,17 @@ fun LinkedListScreen(
 
 
                 OutlinedTextField(
-                    value = nombre,
+                    value = firstName,
                     onValueChange = {
-                        nombre = it
+                        firstName = it
                     }, label = {
                         Text(text = "Nombres")
                     })
 
                 OutlinedTextField(
-                    value = apellidos,
+                    value = lastName,
                     onValueChange = {
-                        apellidos = it
+                        lastName = it
                     }, label = {
                         Text(text = "Apellidos")
                     })
@@ -116,7 +117,7 @@ fun LinkedListScreen(
                         list = (16..42).map { it.toString() },
                         label = "Edad",
                         select = {
-                            edad = if (it.isNotEmpty())
+                            age = if (it.isNotEmpty())
                                 it.toInt()
                             else 0
                         })
@@ -157,14 +158,15 @@ fun LinkedListScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth(0.7f)
                 ) {
+
                     ActionIconBottom(
                         icon = Icons.Outlined.Clear,
                         tint = Purple700,
                         content = "Limpiar",
                         onClick = {
-                            nombre = ""
-                            apellidos = ""
-                            edad = 0
+                            firstName = ""
+                            lastName = ""
+                            age = 0
                             gender = 'm'
                             yearsOfService = 0
                             specialty = ""
@@ -174,18 +176,49 @@ fun LinkedListScreen(
                     ActionIconBottom(
                         icon = Icons.Outlined.Done,
                         tint = GreenDarkMaterial,
-                        content = "Agregar",
+                        content = "Agregar (Final)",
                         onClick = {
-                            viewModel.add(
+                            viewModel.addEnd(
                                 Doctor(
-                                    nombre,
-                                    apellidos,
-                                    edad,
-                                    gender,
+                                    firstName,
+                                    lastName,
+                                    age,
+                                    gender.lowercaseChar(),
                                     yearsOfService,
                                     specialty
                                 )
                             )
+                            firstName = ""
+                            lastName = ""
+                            age = 0
+                            gender = 'm'
+                            yearsOfService = 0
+                            specialty = ""
+                            viewModel.hasBeenAdded()
+                        }
+                    )
+
+                    ActionIconBottom(
+                        icon = Icons.Outlined.Done,
+                        tint = GreenDarkMaterial,
+                        content = "Agregar (Inicio)",
+                        onClick = {
+                            viewModel.addStart(
+                                Doctor(
+                                    firstName,
+                                    lastName,
+                                    age,
+                                    gender.lowercaseChar(),
+                                    yearsOfService,
+                                    specialty
+                                )
+                            )
+                            firstName = ""
+                            lastName = ""
+                            age = 0
+                            gender = 'm'
+                            yearsOfService = 0
+                            specialty = ""
                             viewModel.hasBeenAdded()
                         }
                     )
@@ -200,8 +233,7 @@ fun LinkedListScreen(
                 .padding(16.dp)
         ) {
 
-            item {
-
+            items(viewModel.count.value) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -261,7 +293,21 @@ fun LinkedListScreen(
                     textAlign = TextAlign.End
                 )
 
+
+
                 Text(text = viewModel.list.value.toString())
+
+
+                viewModel.toList().forEach { doctor ->
+                    DoctorCard(
+                        firstName = doctor.firstName,
+                        lastName = doctor.lastName,
+                        age = doctor.age,
+                        gender = doctor.gender,
+                        yearsOfService = doctor.yearsOfService,
+                        specialty = doctor.specialty
+                    )
+                }
             }
         }
 
@@ -271,3 +317,4 @@ fun LinkedListScreen(
         sheetBackgroundColor = color
     )
 }
+

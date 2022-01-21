@@ -12,8 +12,23 @@ class LListViewModel : ViewModel() {
     val list: MutableState<LinkedList<Doctor>>  = mutableStateOf(LinkedList())
     val count = mutableStateOf(0)
 
-    fun add(doctor: Doctor) {
+    fun addEnd(doctor: Doctor) {
         list.value.addEnd(doctor)
+    }
+
+    fun addStart(doctor: Doctor) {
+        list.value.addStart(doctor)
+    }
+
+    fun toList(): List<Doctor>  {
+        val data = ArrayList<Doctor>()
+        return if(list.value.size!=0) {
+            list.value.forEach {
+                data.add(it)
+            }
+            data
+        }else emptyList()
+
     }
 
     fun hasBeenAdded() = count.value++
