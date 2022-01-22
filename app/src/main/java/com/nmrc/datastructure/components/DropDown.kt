@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.toSize
 
 @Composable
@@ -39,6 +40,7 @@ fun DropDownMenu(
 
     Column(modifier = modifier) {
         OutlinedTextField(
+            textStyle = TextStyle(color = MaterialTheme.colors.onBackground),
             value = selectedText,
             onValueChange = { selectedText = it },
             keyboardOptions = keyboardOptions,

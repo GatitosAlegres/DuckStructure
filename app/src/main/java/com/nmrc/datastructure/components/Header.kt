@@ -1,5 +1,8 @@
 package com.nmrc.datastructure.components
 
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -16,24 +19,32 @@ import com.nmrc.datastructure.ui.theme.Green
 @Composable
 fun Header(
     modifier: Modifier = Modifier,
+    subtitleModifier: Modifier = Modifier,
     title: String,
-    subtitle: String) {
+    subtitle: String,
+    content : @Composable RowScope.() -> Unit = {},
+    titleColor: Color = MaterialTheme.colors.onBackground,
+    subTitleColor: Color = Green) {
     Text(
         text = title,
         modifier = modifier.padding(16.dp),
         style = TextStyle(
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colors.onBackground
+            color = titleColor
         )
     )
 
+    Row {
+        content()
+    }
+
     Text(
         text = subtitle,
-        modifier = Modifier.padding(16.dp),
+        modifier = subtitleModifier.padding(16.dp),
         style = TextStyle(
             fontSize = 16.sp,
-            color = Green
+            color = subTitleColor
         )
     )
 }

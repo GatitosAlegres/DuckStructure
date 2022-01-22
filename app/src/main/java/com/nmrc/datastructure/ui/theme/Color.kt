@@ -13,6 +13,7 @@ val GrayMaterial = Color(0xFF808080)
 val GreenDarkMaterial = Color(0xFF01913D)
 
 val White = Color(0xFFFAFAFA)
+val Gray = Color(0xFFEEEEEE)
 val Dark = Color(0xFF031720)
 val BlueVariant = Color(0xFF073042)
 val Aqua = Color(0xFF0A586C)

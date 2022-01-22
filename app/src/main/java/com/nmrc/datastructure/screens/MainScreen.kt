@@ -8,7 +8,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.HealthAndSafety
+import androidx.compose.material.icons.rounded.Hearing
+import androidx.compose.material.icons.rounded.Share
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,16 +21,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.nmrc.datastructure.R
+import com.nmrc.datastructure.components.ActionIconBottom
 import com.nmrc.datastructure.components.CardX
 import com.nmrc.datastructure.components.Header
-import com.nmrc.datastructure.ui.theme.BlueMaterial
-import com.nmrc.datastructure.ui.theme.BlueVariant
-import com.nmrc.datastructure.ui.theme.GrayMaterial
-import com.nmrc.datastructure.ui.theme.White
+import com.nmrc.datastructure.ui.theme.*
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
@@ -79,7 +83,16 @@ fun MainScreen(
 
                     Header(
                         title = "Estructura de Datos Orientado a Objetos",
-                        subtitle = "Una coleccion de estructura de datos para experimentar en tiempo real."
+                        content = {
+                            ActionIconBottom(
+                                modifier = Modifier
+                                    .padding(8.dp),
+                                icon = Icons.Rounded.Favorite,
+                                tint = Orange,
+                                content = "Hospital Regional de Trujillo") {
+                            }
+                        },
+                        subtitle = "Colección e implementación de las estructuras de datos más conocidas a problemas cotidianos"
                     )
 
                     LazyRow(
@@ -134,6 +147,7 @@ fun MainScreen(
                             .padding(top = 50.dp, bottom = 60.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     )
+
 
                     Row(
                         modifier = Modifier

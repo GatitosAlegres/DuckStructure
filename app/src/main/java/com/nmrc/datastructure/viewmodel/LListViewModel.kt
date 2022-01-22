@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.nmrc.core.linkedlist.LinkedList
 import com.nmrc.datastructure.model.Doctor
+import java.util.function.Predicate
 
 class LListViewModel : ViewModel() {
 
@@ -26,6 +27,10 @@ class LListViewModel : ViewModel() {
             data.add(it)
         }
         return data
+    }
+
+    fun count(predicate: Predicate<Doctor>): Int {
+        return list.value.count(predicate)
     }
 
     fun hasBeenAdded() = count.value++

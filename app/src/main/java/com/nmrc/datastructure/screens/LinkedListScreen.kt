@@ -1,5 +1,6 @@
 package com.nmrc.datastructure.screens
 
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,14 +9,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Countertops
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Done
+import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -28,8 +32,8 @@ import com.nmrc.datastructure.components.Header
 import com.nmrc.datastructure.model.Doctor
 import com.nmrc.datastructure.ui.theme.BlueLight
 import com.nmrc.datastructure.ui.theme.BlueVariant
-import com.nmrc.datastructure.ui.theme.GreenDarkMaterial
-import com.nmrc.datastructure.ui.theme.Purple700
+import com.nmrc.datastructure.ui.theme.Green
+import com.nmrc.datastructure.ui.theme.Orange
 import com.nmrc.datastructure.viewmodel.LListViewModel
 
 @ExperimentalMaterialApi
@@ -50,7 +54,8 @@ fun LinkedListScreen(
     var yearsOfService by remember { mutableStateOf(0) }
     var specialty by remember { mutableStateOf("") }
 
-
+    var count by remember { mutableStateOf(" ") }
+    var filter by remember { mutableStateOf(" ") }
 
     BottomSheetScaffold(modifier = Modifier.fillMaxSize(), content = {
         LazyColumn(
@@ -76,7 +81,10 @@ fun LinkedListScreen(
                     )
                 }
 
-                Header(title = "Listas Ligadas", subtitle = "Doctores")
+                Header(
+                    title = "Listas Enlazadas",
+                    subtitle = "Doctores"
+                )
 
 
 
@@ -126,7 +134,7 @@ fun LinkedListScreen(
                 Row() {
                     OutlinedTextField(
                         modifier = Modifier
-                            .fillMaxWidth(0.4f),
+                            .fillMaxWidth(0.3f),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Number
                         ),
@@ -143,7 +151,7 @@ fun LinkedListScreen(
 
                     OutlinedTextField(
                         modifier = Modifier
-                            .fillMaxWidth(0.5f),
+                            .fillMaxWidth(0.6f),
                         value = specialty.toString(),
                         onValueChange = {
                             specialty = it
@@ -156,12 +164,12 @@ fun LinkedListScreen(
 
                 Row(
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth(0.7f)
+                    modifier = Modifier.fillMaxWidth()
                 ) {
 
                     ActionIconBottom(
                         icon = Icons.Outlined.Clear,
-                        tint = Purple700,
+                        tint = Orange,
                         content = "Limpiar",
                         onClick = {
                             firstName = ""
@@ -175,7 +183,7 @@ fun LinkedListScreen(
 
                     ActionIconBottom(
                         icon = Icons.Outlined.Done,
-                        tint = GreenDarkMaterial,
+                        tint = Green,
                         content = "Agregar (Final)",
                         onClick = {
                             viewModel.addEnd(
@@ -200,7 +208,7 @@ fun LinkedListScreen(
 
                     ActionIconBottom(
                         icon = Icons.Outlined.Done,
-                        tint = GreenDarkMaterial,
+                        tint = Green,
                         content = "Agregar (Inicio)",
                         onClick = {
                             viewModel.addStart(
@@ -256,20 +264,83 @@ fun LinkedListScreen(
 
                 )
 
+
+                DataStream(
+                    onAge = { restrict, value ->
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        ActionIconBottom(
+                            icon = Icons.Rounded.Person,
+                            tint = Orange,
+                            content =
+                            if(restrict) {
+                                viewModel.count { it.age <= value }.toString()
+                            }else {
+                                viewModel.count { it.age >= value }.toString()
+                            }) {}
+                        
+
+                    }, onAgeServices = { ageOfServices ->
+
+                    }, onGender = { gender ->
+
+                    }, onSpecialty = { specialty ->
+
+                    }
+                )
+
+
+
                 Header(
                     title = "Filtrar",
                     subtitle = "Seleccione el caso de uso"
                 )
+
+                DropDownMenu(
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .height(64.dp),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    list = listOf("Sexo", "Edad", "Años de Servicio", "Especialidad"),
+                    label = "Filtrar por",
+                    select = {
+                        filter = if (it.isNotEmpty())
+                            it
+                        else ""
+                    })
+
+
+
 
                 Header(
                     title = "Ordenar",
                     subtitle = "Seleccione el caso de uso"
                 )
 
+                DropDownMenu(
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .height(64.dp),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    list = listOf("Sexo", "Edad", "Años de Servicio", "Especialidad"),
+                    label = "Ordenar por",
+                    select = {
+                        count = if (it.isNotEmpty())
+                            it
+                        else ""
+                    })
+
                 Header(
                     title = "Modificar Campos",
                     subtitle = "Seleccione el caso de uso"
                 )
+
+
 
                 Header(
                     title = "Reducir",
@@ -287,10 +358,6 @@ fun LinkedListScreen(
                         .padding(end = 16.dp),
                     textAlign = TextAlign.End
                 )
-
-
-
-                Text(text = viewModel.list.value.toString())
 
 
                 viewModel.toList().forEach { doctor ->
@@ -312,5 +379,125 @@ fun LinkedListScreen(
         sheetBackgroundColor = color,
         drawerBackgroundColor = Color.White
     )
+}
+
+@Composable
+private fun DataStream(
+    onGender: @Composable (Char) -> Unit,
+    onAge: @Composable (restrict: Boolean, value: Int) -> Unit,
+    onAgeServices: @Composable (Int) -> Unit,
+    onSpecialty: @Composable (String) -> Unit
+) {
+
+    var count by remember {
+        mutableStateOf("")
+    }
+    var gender by remember {
+        mutableStateOf('m')
+    }
+    var ageRestrict by remember {
+        mutableStateOf(false)
+    }
+    var age by remember {
+        mutableStateOf(0)
+    }
+    var ageServices by remember {
+        mutableStateOf(0)
+    }
+    var specialty by remember {
+        mutableStateOf("")
+    }
+
+    DropDownMenu(
+        modifier = Modifier
+            .fillMaxWidth(0.5f)
+            .height(64.dp),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number
+        ),
+        list = listOf("Sexo", "Edad", "Años de Servicio", "Especialidad"),
+        label = "Contar por",
+        select = {
+            count = if (it.isNotEmpty())
+                it
+            else ""
+        })
+
+    if (count.isNotEmpty()) {
+        when (count) {
+            "Sexo" -> {
+                DropDownMenu(
+                    modifier = Modifier.fillMaxWidth(0.4f),
+                    list = listOf("Masculino", "Femenino"),
+                    label = "Sexo",
+                    select = {
+                        gender = it.lowercase()[0]
+                    })
+                onGender(gender)
+            }
+            "Edad" -> {
+                DropDownMenu(
+                    modifier = Modifier.fillMaxWidth(0.4f),
+                    list = listOf("Mayor que", "Menor que"),
+                    label = "Restriccion",
+                    select = {
+                        // Send data value to viewmodel
+                        if (it.isNotEmpty())
+                            when (it) {
+                                "Mayor que" -> ageRestrict = false
+                                "Menor que" -> ageRestrict = true
+                            }
+                    })
+
+                DropDownMenu(
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .height(64.dp),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    list = (16..42).map { it.toString() },
+                    label = "Valor",
+                    select = {
+                        // Send data value to viewmodel
+                        if (it.isNotEmpty())
+                            age = it.toInt()
+                    })
+                onAge(ageRestrict, age)
+            }
+            "Años de Servicio" -> {
+                DropDownMenu(
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .height(64.dp),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    list = (1..20).map { it.toString() },
+                    label = "Valor",
+                    select = {
+                        // Send data value to viewmodel
+                        if (it.isNotEmpty())
+                            ageServices = it.toInt()
+
+                    })
+                onAgeServices(ageServices)
+            }
+            "Especialidad" -> {
+                OutlinedTextField(
+                    textStyle = TextStyle(color = MaterialTheme.colors.onBackground),
+                    modifier = Modifier
+                        .fillMaxWidth(0.6f),
+                    value = specialty,
+                    onValueChange = {
+                        if (it.isNotEmpty())
+                            specialty = it
+                    }, label = {
+                        Text(text = "Valor")
+                    })
+                onSpecialty(specialty)
+            }
+        }
+    }
 }
 
