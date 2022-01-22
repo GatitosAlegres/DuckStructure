@@ -1,6 +1,5 @@
 package com.nmrc.datastructure.screens
 
-import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,7 +8,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Countertops
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Done
@@ -25,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.nmrc.core.linkedlist.LinkedList
 import com.nmrc.datastructure.components.ActionIconBottom
 import com.nmrc.datastructure.components.DoctorCard
 import com.nmrc.datastructure.components.DropDownMenu
@@ -274,45 +273,90 @@ fun LinkedListScreen(
                             icon = Icons.Rounded.Person,
                             tint = Orange,
                             content =
-                            if(restrict) {
+                            if (restrict) {
                                 viewModel.count { it.age <= value }.toString()
-                            }else {
+                            } else {
                                 viewModel.count { it.age >= value }.toString()
-                            }) {}
-                        
+                            }
+                        ) {}
 
-                    }, onAgeServices = { ageOfServices ->
 
+                    }, onYearsServices = { yearsOfServices ->
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        ActionIconBottom(
+                            icon = Icons.Rounded.Person,
+                            tint = Orange,
+                            content =
+                            viewModel.count { it.yearsOfService == yearsOfServices }.toString()
+                        ) {}
                     }, onGender = { gender ->
+                        Spacer(modifier = Modifier.height(8.dp))
 
+                        ActionIconBottom(
+                            icon = Icons.Rounded.Person,
+                            tint = Orange,
+                            content =
+                            viewModel.count { it.gender == gender }.toString()
+                        ) {}
                     }, onSpecialty = { specialty ->
+                        Spacer(modifier = Modifier.height(8.dp))
 
+                        ActionIconBottom(
+                            icon = Icons.Rounded.Person,
+                            tint = Orange,
+                            content =
+                            viewModel.count { it.specialty == specialty }.toString()
+                        ) {}
                     }
                 )
-
-
 
                 Header(
                     title = "Filtrar",
                     subtitle = "Seleccione el caso de uso"
                 )
 
-                DropDownMenu(
-                    modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .height(64.dp),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number
-                    ),
-                    list = listOf("Sexo", "Edad", "Años de Servicio", "Especialidad"),
-                    label = "Filtrar por",
-                    select = {
-                        filter = if (it.isNotEmpty())
-                            it
-                        else ""
+                DataStream(onAge = { restrict, value ->
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    if (restrict)
+                        LListViewModel.toList(
+                            viewModel.list.value.filter {
+                                it.age <= value
+                            } as LinkedList<Doctor>
+                        ).forEach { doctor ->
+                            DoctorCard(
+                                firstName = doctor.firstName,
+                                lastName = doctor.lastName,
+                                age = doctor.age,
+                                gender = doctor.gender,
+                                yearsOfService = doctor.yearsOfService,
+                                specialty = doctor.specialty
+                            )
+                        }
+                    else
+                        LListViewModel.toList(
+                            viewModel.list.value.filter {
+                                it.age >= value
+                            } as LinkedList<Doctor>
+                        ).forEach { doctor ->
+                            DoctorCard(
+                                firstName = doctor.firstName,
+                                lastName = doctor.lastName,
+                                age = doctor.age,
+                                gender = doctor.gender,
+                                yearsOfService = doctor.yearsOfService,
+                                specialty = doctor.specialty
+                            )
+                        }
+                }, onYearsServices = { yearsOfServices ->
+
+                }, onGender = { gender ->
+
+                },
+                    onSpecialty = { specialty ->
+
                     })
-
-
 
 
                 Header(
@@ -320,26 +364,10 @@ fun LinkedListScreen(
                     subtitle = "Seleccione el caso de uso"
                 )
 
-                DropDownMenu(
-                    modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .height(64.dp),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number
-                    ),
-                    list = listOf("Sexo", "Edad", "Años de Servicio", "Especialidad"),
-                    label = "Ordenar por",
-                    select = {
-                        count = if (it.isNotEmpty())
-                            it
-                        else ""
-                    })
-
                 Header(
                     title = "Modificar Campos",
                     subtitle = "Seleccione el caso de uso"
                 )
-
 
 
                 Header(
@@ -359,8 +387,7 @@ fun LinkedListScreen(
                     textAlign = TextAlign.End
                 )
 
-
-                viewModel.toList().forEach { doctor ->
+                LListViewModel.toList(viewModel.list.value).forEach { doctor ->
                     DoctorCard(
                         firstName = doctor.firstName,
                         lastName = doctor.lastName,
@@ -373,7 +400,6 @@ fun LinkedListScreen(
             }
         }
 
-
     }, scaffoldState = state,
         sheetShape = RoundedCornerShape(16.dp),
         sheetBackgroundColor = color,
@@ -385,7 +411,7 @@ fun LinkedListScreen(
 private fun DataStream(
     onGender: @Composable (Char) -> Unit,
     onAge: @Composable (restrict: Boolean, value: Int) -> Unit,
-    onAgeServices: @Composable (Int) -> Unit,
+    onYearsServices: @Composable (Int) -> Unit,
     onSpecialty: @Composable (String) -> Unit
 ) {
 
@@ -401,7 +427,7 @@ private fun DataStream(
     var age by remember {
         mutableStateOf(0)
     }
-    var ageServices by remember {
+    var yearsServices by remember {
         mutableStateOf(0)
     }
     var specialty by remember {
@@ -438,14 +464,14 @@ private fun DataStream(
             "Edad" -> {
                 DropDownMenu(
                     modifier = Modifier.fillMaxWidth(0.4f),
-                    list = listOf("Mayor que", "Menor que"),
+                    list = listOf("Mayor o igual que", "Menor o igual que"),
                     label = "Restriccion",
                     select = {
                         // Send data value to viewmodel
                         if (it.isNotEmpty())
                             when (it) {
-                                "Mayor que" -> ageRestrict = false
-                                "Menor que" -> ageRestrict = true
+                                "Mayor o igual que" -> ageRestrict = false
+                                "Menor o igual que" -> ageRestrict = true
                             }
                     })
 
@@ -478,10 +504,10 @@ private fun DataStream(
                     select = {
                         // Send data value to viewmodel
                         if (it.isNotEmpty())
-                            ageServices = it.toInt()
+                            yearsServices = it.toInt()
 
                     })
-                onAgeServices(ageServices)
+                onYearsServices(yearsServices)
             }
             "Especialidad" -> {
                 OutlinedTextField(
