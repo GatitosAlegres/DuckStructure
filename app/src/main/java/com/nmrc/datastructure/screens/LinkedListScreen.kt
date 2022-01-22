@@ -26,9 +26,9 @@ import com.nmrc.datastructure.components.DoctorCard
 import com.nmrc.datastructure.components.DropDownMenu
 import com.nmrc.datastructure.components.Header
 import com.nmrc.datastructure.model.Doctor
-import com.nmrc.datastructure.ui.theme.BlueMaterial
+import com.nmrc.datastructure.ui.theme.BlueLight
+import com.nmrc.datastructure.ui.theme.BlueVariant
 import com.nmrc.datastructure.ui.theme.GreenDarkMaterial
-import com.nmrc.datastructure.ui.theme.Purple500
 import com.nmrc.datastructure.ui.theme.Purple700
 import com.nmrc.datastructure.viewmodel.LListViewModel
 
@@ -41,7 +41,7 @@ fun LinkedListScreen(
 ) {
 
     val state = rememberBottomSheetScaffoldState()
-    val color = if (isDark) Color(0xFF455A64) else Purple500
+    val color = if (isDark) BlueVariant else BlueLight
 
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
@@ -70,7 +70,7 @@ fun LinkedListScreen(
                     Icon(
                         Icons.Outlined.ArrowBack,
                         contentDescription = "",
-                        tint = BlueMaterial,
+                        tint = MaterialTheme.colors.onBackground,
                         modifier = Modifier
                             .size(35.dp)
                     )
@@ -233,7 +233,7 @@ fun LinkedListScreen(
                 .padding(16.dp)
         ) {
 
-            items(viewModel.count.value) {
+            item() {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -252,38 +252,33 @@ fun LinkedListScreen(
 
                 Header(
                     title = "Contar",
-                    subtitle = "Seleccione el caso de uso",
-                    color = MaterialTheme.colors.onPrimary
+                    subtitle = "Seleccione el caso de uso"
+
                 )
 
                 Header(
                     title = "Filtrar",
-                    subtitle = "Seleccione el caso de uso",
-                    color = MaterialTheme.colors.onPrimary
+                    subtitle = "Seleccione el caso de uso"
                 )
 
                 Header(
                     title = "Ordenar",
-                    subtitle = "Seleccione el caso de uso",
-                    color = MaterialTheme.colors.onPrimary
+                    subtitle = "Seleccione el caso de uso"
                 )
 
                 Header(
                     title = "Modificar Campos",
-                    subtitle = "Seleccione el caso de uso",
-                    color = MaterialTheme.colors.onPrimary
+                    subtitle = "Seleccione el caso de uso"
                 )
 
                 Header(
                     title = "Reducir",
-                    subtitle = "Seleccione el caso de uso",
-                    color = MaterialTheme.colors.onPrimary
+                    subtitle = "Seleccione el caso de uso"
                 )
 
                 Header(
                     title = "RESULTADO",
-                    subtitle = "",
-                    color = MaterialTheme.colors.onPrimary
+                    subtitle = ""
                 )
                 Text(
                     text = "Total : ${viewModel.count.value}",
@@ -314,7 +309,8 @@ fun LinkedListScreen(
 
     }, scaffoldState = state,
         sheetShape = RoundedCornerShape(16.dp),
-        sheetBackgroundColor = color
+        sheetBackgroundColor = color,
+        drawerBackgroundColor = Color.White
     )
 }
 

@@ -2,6 +2,7 @@ package com.nmrc.datastructure.screens
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -22,18 +23,23 @@ import com.nmrc.datastructure.R
 import com.nmrc.datastructure.components.CardX
 import com.nmrc.datastructure.components.Header
 import com.nmrc.datastructure.ui.theme.BlueMaterial
+import com.nmrc.datastructure.ui.theme.BlueVariant
 import com.nmrc.datastructure.ui.theme.GrayMaterial
+import com.nmrc.datastructure.ui.theme.White
 
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @Composable
-fun MainScreen(navController: NavHostController) {
+fun MainScreen(
+    navController: NavHostController
+) {
 
     var expanded by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
+
         content = {
 
             LazyColumn(
@@ -52,7 +58,7 @@ fun MainScreen(navController: NavHostController) {
                         Icon(
                             Icons.Outlined.Menu,
                             contentDescription = "",
-                            tint = BlueMaterial,
+                            tint = MaterialTheme.colors.onBackground,
                             modifier = Modifier
                                 .size(35.dp)
                         )
@@ -73,7 +79,8 @@ fun MainScreen(navController: NavHostController) {
 
                     Header(
                         title = "Estructura de Datos Orientado a Objetos",
-                        subtitle = "Una coleccion de estructura de datos para experimentar en tiempo real.")
+                        subtitle = "Una coleccion de estructura de datos para experimentar en tiempo real."
+                    )
 
                     LazyRow(
                         content = {
