@@ -53,9 +53,6 @@ fun LinkedListScreen(
     var yearsOfService by remember { mutableStateOf(0) }
     var specialty by remember { mutableStateOf("") }
 
-    var count by remember { mutableStateOf(" ") }
-    var filter by remember { mutableStateOf(" ") }
-
     BottomSheetScaffold(modifier = Modifier.fillMaxSize(), content = {
         LazyColumn(
             modifier = Modifier
@@ -151,7 +148,7 @@ fun LinkedListScreen(
                     OutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth(0.6f),
-                        value = specialty.toString(),
+                        value = specialty,
                         onValueChange = {
                             specialty = it
                         }, label = {
@@ -185,7 +182,7 @@ fun LinkedListScreen(
                         tint = Green,
                         content = "Agregar (Final)",
                         onClick = {
-                            viewModel.addEnd(
+                            viewModel.list.value.addEnd(
                                 Doctor(
                                     firstName,
                                     lastName,
@@ -210,7 +207,7 @@ fun LinkedListScreen(
                         tint = Green,
                         content = "Agregar (Inicio)",
                         onClick = {
-                            viewModel.addStart(
+                            viewModel.list.value.addStart(
                                 Doctor(
                                     firstName,
                                     lastName,
@@ -274,9 +271,9 @@ fun LinkedListScreen(
                             tint = Orange,
                             content =
                             if (restrict) {
-                                viewModel.count { it.age <= value }.toString()
+                                viewModel.list.value.count { it.age <= value }.toString()
                             } else {
-                                viewModel.count { it.age >= value }.toString()
+                                viewModel.list.value.count { it.age >= value }.toString()
                             }
                         ) {}
 
@@ -288,7 +285,8 @@ fun LinkedListScreen(
                             icon = Icons.Rounded.Person,
                             tint = Orange,
                             content =
-                            viewModel.count { it.yearsOfService == yearsOfServices }.toString()
+                            viewModel.list.value.count { it.yearsOfService == yearsOfServices }
+                                .toString()
                         ) {}
                     }, onGender = { gender ->
                         Spacer(modifier = Modifier.height(8.dp))
@@ -297,7 +295,7 @@ fun LinkedListScreen(
                             icon = Icons.Rounded.Person,
                             tint = Orange,
                             content =
-                            viewModel.count { it.gender == gender }.toString()
+                            viewModel.list.value.count { it.gender == gender }.toString()
                         ) {}
                     }, onSpecialty = { specialty ->
                         Spacer(modifier = Modifier.height(8.dp))
@@ -306,7 +304,7 @@ fun LinkedListScreen(
                             icon = Icons.Rounded.Person,
                             tint = Orange,
                             content =
-                            viewModel.count { it.specialty == specialty }.toString()
+                            viewModel.list.value.count { it.specialty == specialty }.toString()
                         ) {}
                     }
                 )
@@ -317,7 +315,6 @@ fun LinkedListScreen(
                 )
 
                 DataStream(onAge = { restrict, value ->
-                    Spacer(modifier = Modifier.height(8.dp))
 
                     if (restrict)
                         LListViewModel.toList(
@@ -350,12 +347,51 @@ fun LinkedListScreen(
                             )
                         }
                 }, onYearsServices = { yearsOfServices ->
-
+                    LListViewModel.toList(
+                        viewModel.list.value.filter {
+                            it.yearsOfService == yearsOfServices
+                        } as LinkedList<Doctor>
+                    ).forEach { doctor ->
+                        DoctorCard(
+                            firstName = doctor.firstName,
+                            lastName = doctor.lastName,
+                            age = doctor.age,
+                            gender = doctor.gender,
+                            yearsOfService = doctor.yearsOfService,
+                            specialty = doctor.specialty
+                        )
+                    }
                 }, onGender = { gender ->
-
+                    LListViewModel.toList(
+                        viewModel.list.value.filter {
+                            it.gender == gender
+                        } as LinkedList<Doctor>
+                    ).forEach { doctor ->
+                        DoctorCard(
+                            firstName = doctor.firstName,
+                            lastName = doctor.lastName,
+                            age = doctor.age,
+                            gender = doctor.gender,
+                            yearsOfService = doctor.yearsOfService,
+                            specialty = doctor.specialty
+                        )
+                    }
                 },
                     onSpecialty = { specialty ->
-
+                        LListViewModel.toList(
+                            viewModel.list.value.filter {
+                                it.specialty == specialty
+                            } as LinkedList<Doctor>
+                        ).forEach { doctor ->
+                            DoctorCard(
+                                firstName = doctor.firstName,
+                                lastName = doctor.lastName,
+                                age = doctor.age,
+                                gender = doctor.gender,
+                                yearsOfService = doctor.yearsOfService,
+                                specialty = doctor.specialty
+                            )
+                        }
                     })
 
 
@@ -363,6 +399,19 @@ fun LinkedListScreen(
                     title = "Ordenar",
                     subtitle = "Seleccione el caso de uso"
                 )
+
+                DataStream(onAge = { restrict, value ->
+
+                },
+                    onYearsServices = { yearsOfServices ->
+
+                    },
+                    onGender = { gender ->
+
+                    },
+                    onSpecialty = { specialty ->
+
+                    })
 
                 Header(
                     title = "Modificar Campos",
@@ -376,7 +425,7 @@ fun LinkedListScreen(
                 )
 
                 Header(
-                    title = "RESULTADO",
+                    title = "TOTAL DE DOCTORES",
                     subtitle = ""
                 )
                 Text(
