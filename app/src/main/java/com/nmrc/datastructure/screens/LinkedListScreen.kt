@@ -262,6 +262,7 @@ fun LinkedListScreen(
 
 
                 DataStream(
+                    label = "Contar por",
                     onAge = { restrict, value ->
 
                         Spacer(modifier = Modifier.height(8.dp))
@@ -314,7 +315,9 @@ fun LinkedListScreen(
                     subtitle = "Seleccione el caso de uso"
                 )
 
-                DataStream(onAge = { restrict, value ->
+                DataStream(
+                    label = "Filtrar por",
+                    onAge = { restrict, value ->
 
                     if (restrict)
                         LListViewModel.toList(
@@ -400,17 +403,152 @@ fun LinkedListScreen(
                     subtitle = "Seleccione el caso de uso"
                 )
 
-                DataStream(onAge = { restrict, value ->
+                SortDataStream(
+                    label = "Ordenar por",
+                    onAge = { asc ->
+                    if (asc) {
+                        viewModel.list.value.sort { doc1, doc2 ->
+                            doc1.age - doc2.age
+                        }
+                        LListViewModel.toList(
+                            viewModel.list.value
+                        ).forEach { doctor ->
+                            DoctorCard(
+                                firstName = doctor.firstName,
+                                lastName = doctor.lastName,
+                                age = doctor.age,
+                                gender = doctor.gender,
+                                yearsOfService = doctor.yearsOfService,
+                                specialty = doctor.specialty
+                            )
+                        }
+                    }
+                    else {
+                        viewModel.list.value.sort { doc1, doc2 ->
+                            doc2.age - doc1.age
+                        }
+                        LListViewModel.toList(
+                            viewModel.list.value
+                        ).forEach { doctor ->
+                            DoctorCard(
+                                firstName = doctor.firstName,
+                                lastName = doctor.lastName,
+                                age = doctor.age,
+                                gender = doctor.gender,
+                                yearsOfService = doctor.yearsOfService,
+                                specialty = doctor.specialty
+                            )
+                        }
+                    }
 
                 },
-                    onYearsServices = { yearsOfServices ->
-
+                    onYearsServices = { asc ->
+                        if (asc) {
+                            viewModel.list.value.sort { doc1, doc2 ->
+                                doc1.yearsOfService - doc2.yearsOfService
+                            }
+                            LListViewModel.toList(
+                                viewModel.list.value
+                            ).forEach { doctor ->
+                                DoctorCard(
+                                    firstName = doctor.firstName,
+                                    lastName = doctor.lastName,
+                                    age = doctor.age,
+                                    gender = doctor.gender,
+                                    yearsOfService = doctor.yearsOfService,
+                                    specialty = doctor.specialty
+                                )
+                            }
+                        }
+                        else {
+                            viewModel.list.value.sort { doc1, doc2 ->
+                                doc2.yearsOfService - doc1.yearsOfService
+                            }
+                            LListViewModel.toList(
+                                viewModel.list.value
+                            ).forEach { doctor ->
+                                DoctorCard(
+                                    firstName = doctor.firstName,
+                                    lastName = doctor.lastName,
+                                    age = doctor.age,
+                                    gender = doctor.gender,
+                                    yearsOfService = doctor.yearsOfService,
+                                    specialty = doctor.specialty
+                                )
+                            }
+                        }
                     },
                     onGender = { gender ->
-
+                        if (gender == 'm') {
+                            viewModel.list.value.sort { doc1, doc2 ->
+                                doc1.gender.compareTo(doc2.gender)
+                            }
+                            LListViewModel.toList(
+                                viewModel.list.value
+                            ).forEach { doctor ->
+                                DoctorCard(
+                                    firstName = doctor.firstName,
+                                    lastName = doctor.lastName,
+                                    age = doctor.age,
+                                    gender = doctor.gender,
+                                    yearsOfService = doctor.yearsOfService,
+                                    specialty = doctor.specialty
+                                )
+                            }
+                        }
+                        else {
+                            viewModel.list.value.sort { doc1, doc2 ->
+                                doc2.gender.compareTo(doc1.gender)
+                            }
+                            LListViewModel.toList(
+                                viewModel.list.value
+                            ).forEach { doctor ->
+                                DoctorCard(
+                                    firstName = doctor.firstName,
+                                    lastName = doctor.lastName,
+                                    age = doctor.age,
+                                    gender = doctor.gender,
+                                    yearsOfService = doctor.yearsOfService,
+                                    specialty = doctor.specialty
+                                )
+                            }
+                        }
                     },
-                    onSpecialty = { specialty ->
-
+                    onSpecialty = { asc ->
+                        if (asc) {
+                            viewModel.list.value.sort { doc1, doc2 ->
+                                doc1.specialty.compareTo(doc2.specialty)
+                            }
+                            LListViewModel.toList(
+                                viewModel.list.value
+                            ).forEach { doctor ->
+                                DoctorCard(
+                                    firstName = doctor.firstName,
+                                    lastName = doctor.lastName,
+                                    age = doctor.age,
+                                    gender = doctor.gender,
+                                    yearsOfService = doctor.yearsOfService,
+                                    specialty = doctor.specialty
+                                )
+                            }
+                        }
+                        else {
+                            viewModel.list.value.sort { doc1, doc2 ->
+                                doc2.specialty.compareTo(doc1.specialty)
+                            }
+                            LListViewModel.toList(
+                                viewModel.list.value
+                            ).forEach { doctor ->
+                                DoctorCard(
+                                    firstName = doctor.firstName,
+                                    lastName = doctor.lastName,
+                                    age = doctor.age,
+                                    gender = doctor.gender,
+                                    yearsOfService = doctor.yearsOfService,
+                                    specialty = doctor.specialty
+                                )
+                            }
+                        }
                     })
 
                 Header(
@@ -458,6 +596,7 @@ fun LinkedListScreen(
 
 @Composable
 private fun DataStream(
+    label: String,
     onGender: @Composable (Char) -> Unit,
     onAge: @Composable (restrict: Boolean, value: Int) -> Unit,
     onYearsServices: @Composable (Int) -> Unit,
@@ -491,7 +630,7 @@ private fun DataStream(
             keyboardType = KeyboardType.Number
         ),
         list = listOf("Sexo", "Edad", "Años de Servicio", "Especialidad"),
-        label = "Contar por",
+        label = label,
         select = {
             count = if (it.isNotEmpty())
                 it
@@ -576,3 +715,106 @@ private fun DataStream(
     }
 }
 
+@Composable
+private fun SortDataStream(
+    label: String,
+    onGender: @Composable (Char) -> Unit,
+    onAge: @Composable (asc: Boolean) -> Unit,
+    onYearsServices: @Composable (asc: Boolean) -> Unit,
+    onSpecialty: @Composable (asc: Boolean) -> Unit
+) {
+
+    var count by remember {
+        mutableStateOf("")
+    }
+    var gender by remember {
+        mutableStateOf('m')
+    }
+    var age by remember {
+        mutableStateOf(false)
+    }
+
+    var yearsServices by remember {
+        mutableStateOf(false)
+    }
+    var specialty by remember {
+        mutableStateOf(false)
+    }
+
+    DropDownMenu(
+        modifier = Modifier
+            .fillMaxWidth(0.5f)
+            .height(64.dp),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number
+        ),
+        list = listOf("Sexo", "Edad", "Años de Servicio", "Especialidad"),
+        label = label,
+        select = {
+            count = if (it.isNotEmpty())
+                it
+            else ""
+        })
+
+    if (count.isNotEmpty()) {
+        when (count) {
+            "Sexo" -> {
+                DropDownMenu(
+                    modifier = Modifier.fillMaxWidth(0.4f),
+                    list = listOf("Masculino", "Femenino"),
+                    label = "Sexo",
+                    select = {
+                        gender = it.lowercase()[0]
+                    })
+                onGender(gender)
+            }
+            "Edad" -> {
+                DropDownMenu(
+                    modifier = Modifier.fillMaxWidth(0.4f),
+                    list = listOf("Ascendente", "Descendente"),
+                    label = "Orden",
+                    select = {
+                        // Send data value to viewmodel
+                        if (it.isNotEmpty())
+                            when (it) {
+                                "Ascendente" -> age = true
+                                "Descendente" -> age = false
+                            }
+                    })
+
+                onAge(age)
+            }
+            "Años de Servicio" -> {
+                DropDownMenu(
+                    modifier = Modifier.fillMaxWidth(0.4f),
+                    list = listOf("Ascendente", "Descendente"),
+                    label = "Orden",
+                    select = {
+                        // Send data value to viewmodel
+                        if (it.isNotEmpty())
+                            when (it) {
+                                "Ascendente" -> yearsServices = true
+                                "Descendente" -> yearsServices = false
+                            }
+                    })
+
+                onYearsServices(yearsServices)
+            }
+            "Especialidad" -> {
+                DropDownMenu(
+                    modifier = Modifier.fillMaxWidth(0.4f),
+                    list = listOf("Ascendente", "Descendente"),
+                    label = "Orden",
+                    select = {
+                        // Send data value to viewmodel
+                        if (it.isNotEmpty())
+                            when (it) {
+                                "Ascendente" -> specialty = false
+                                "Descendente" -> specialty = true
+                            }
+                    })
+                onSpecialty(specialty)
+            }
+        }
+    }
+}
