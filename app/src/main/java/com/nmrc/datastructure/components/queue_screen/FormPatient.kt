@@ -1,5 +1,6 @@
 package com.nmrc.datastructure.components.queue_screen
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
@@ -16,13 +17,15 @@ import androidx.compose.ui.unit.dp
 import com.nmrc.datastructure.components.ActionIconBottom
 import com.nmrc.datastructure.components.DropDownMenu
 import com.nmrc.datastructure.ui.theme.Green
+import com.nmrc.datastructure.ui.theme.GreenDarkMaterial
 import com.nmrc.datastructure.ui.theme.Orange
 
 @Composable
 fun FormPatient(
     enqueue: (String, String, Int, Char, String) -> Unit,
     onEdit: Boolean = false,
-    edit: ((String, String, Int, Char, String) -> Unit)? = null
+    edit: ((String, String, Int, Char, String) -> Unit)? = null,
+    isDark: Boolean = isSystemInDarkTheme()
 ) {
     var firstName1 by remember { mutableStateOf("") }
     var lastName1 by remember { mutableStateOf("") }
@@ -111,7 +114,7 @@ fun FormPatient(
     if (!onEdit) {
         ActionIconBottom(
             icon = Icons.Outlined.Done,
-            tint = Green,
+            tint = if(isDark) Green else GreenDarkMaterial,
             content = "Agregar a la Cola",
             onClick = {
                 enqueue(
@@ -133,7 +136,7 @@ fun FormPatient(
     } else {
         ActionIconBottom(
             icon = Icons.Outlined.Done,
-            tint = Green,
+            tint = if(isDark) Green else GreenDarkMaterial,
             content = "Editar",
             onClick = {
                 if (edit != null) {

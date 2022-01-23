@@ -18,5 +18,8 @@ class MainViewModel : ViewModel() {
     private val _listAppointment: MutableState<Stack<Appointment>> = mutableStateOf(Stack())
     val listAppointment: State<Stack<Appointment>> = _listAppointment
 
+    val count = mutableStateOf(0)
+
+    fun statusChange() = count.value++
 
 }

@@ -38,7 +38,8 @@ import com.nmrc.datastructure.ui.theme.*
 @ExperimentalMaterialApi
 @Composable
 fun MainScreen(
-    navController: NavHostController
+    navController: NavHostController,
+    isDark: Boolean = isSystemInDarkTheme()
 ) {
 
     var expanded by remember { mutableStateOf(false) }
@@ -71,6 +72,8 @@ fun MainScreen(
                     }
 
                     DropdownMenu(
+                        modifier = Modifier
+                            .background(if(isDark) BlueVariantDark else WhiteMaterial),
                         expanded = expanded,
                         onDismissRequest = { expanded = false }) {
                         DropdownMenuItem(onClick = {}) {
@@ -85,8 +88,7 @@ fun MainScreen(
 
                     Header(
                         title = "Estructura de Datos Orientado a Objetos",
-                        subtitle = "Colección e implementación de las estructuras de datos más conocidas a problemas cotidianos",
-                        weightSubtitle = FontWeight.Bold
+                        subtitle = "Colección e implementación de las estructuras de datos más conocidas a problemas cotidianos"
                     )
                     ActionIconBottom(
                         modifier = Modifier

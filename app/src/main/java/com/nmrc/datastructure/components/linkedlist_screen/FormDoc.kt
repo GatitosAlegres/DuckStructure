@@ -1,5 +1,6 @@
 package com.nmrc.datastructure.components.linkedlist_screen
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.MaterialTheme
@@ -16,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.nmrc.datastructure.components.ActionIconBottom
 import com.nmrc.datastructure.components.DropDownMenu
 import com.nmrc.datastructure.ui.theme.Green
+import com.nmrc.datastructure.ui.theme.GreenDarkMaterial
 import com.nmrc.datastructure.ui.theme.Orange
 
 @Composable
@@ -23,7 +25,8 @@ fun FormDoc(
     addEnd: (String, String, Int, Char, Int, String) -> Unit,
     addStart: (String, String, Int, Char, Int, String) -> Unit,
     onEdit: Boolean = false,
-    edit: ((String, String, Int, Char, Int, String) -> Unit)? = null
+    edit: ((String, String, Int, Char, Int, String) -> Unit)? = null,
+    isDark: Boolean = isSystemInDarkTheme()
 ) {
     var firstName1 by remember { mutableStateOf("") }
     var lastName1 by remember { mutableStateOf("") }
@@ -131,7 +134,7 @@ fun FormDoc(
     if (!onEdit) {
         ActionIconBottom(
             icon = Icons.Outlined.Done,
-            tint = Green,
+            tint = if(isDark) Green else GreenDarkMaterial,
             content = "Agregar (Final)",
             onClick = {
                 addEnd(
@@ -154,7 +157,7 @@ fun FormDoc(
 
         ActionIconBottom(
             icon = Icons.Outlined.Done,
-            tint = Green,
+            tint = if(isDark) Green else GreenDarkMaterial,
             content = "Agregar (Inicio)",
             onClick = {
                 addStart(
@@ -175,7 +178,7 @@ fun FormDoc(
     } else {
         ActionIconBottom(
             icon = Icons.Outlined.Done,
-            tint = Green,
+            tint = if(isDark) Green else GreenDarkMaterial,
             content = "Editar",
             onClick = {
                 if (edit != null) {

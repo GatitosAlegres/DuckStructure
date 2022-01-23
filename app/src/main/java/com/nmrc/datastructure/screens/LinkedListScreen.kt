@@ -1,6 +1,5 @@
 package com.nmrc.datastructure.screens
 
-import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -92,7 +91,7 @@ fun LinkedListScreen(
                             specialty
                         )
                     )
-                    viewModel.hasBeenAdded()
+                    viewModel.statusChange()
 
                 }, addStart = { firstName, lastName, age, gender, yearsOfService, specialty ->
                     viewModel.list.value.addStart(
@@ -105,7 +104,7 @@ fun LinkedListScreen(
                             specialty
                         )
                     )
-                    viewModel.hasBeenAdded()
+                    viewModel.statusChange()
                 })
             }
         }
@@ -501,7 +500,7 @@ fun LinkedListScreen(
                                 )
                             )
                             viewModel.list.value.remove(tempDoc)
-                            viewModel.hasBeenAdded()
+                            viewModel.statusChange()
                             tempDoc.lastName = ""
                         })
                 }

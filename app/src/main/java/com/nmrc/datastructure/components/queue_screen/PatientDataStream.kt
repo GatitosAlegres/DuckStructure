@@ -1,25 +1,19 @@
-package com.nmrc.datastructure.components.linkedlist_screen
+package com.nmrc.datastructure.components.queue_screen
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.nmrc.datastructure.components.DropDownMenu
 
 @Composable
-fun DataStream(
+fun PatientDataStream(
     label: String,
-    onGender: @Composable (Char) -> Unit,
     onAge: @Composable (restrict: Boolean, value: Int) -> Unit,
-    onYearsServices: @Composable (Int) -> Unit,
-    onSpecialty: @Composable (String) -> Unit
+    onGender: @Composable (Char) -> Unit
 ) {
 
     var count by remember {
@@ -34,12 +28,6 @@ fun DataStream(
     var age by remember {
         mutableStateOf(0)
     }
-    var yearsServices by remember {
-        mutableStateOf(0)
-    }
-    var specialty by remember {
-        mutableStateOf("")
-    }
 
     DropDownMenu(
         modifier = Modifier
@@ -48,7 +36,7 @@ fun DataStream(
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number
         ),
-        list = listOf("Sexo", "Edad", "Años de Servicio", "Especialidad"),
+        list = listOf("Sexo", "Edad"),
         label = label,
         select = {
             count = if (it.isNotEmpty())
@@ -97,38 +85,6 @@ fun DataStream(
                             age = it.toInt()
                     })
                 onAge(ageRestrict, age)
-            }
-            "Años de Servicio" -> {
-                DropDownMenu(
-                    modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .height(64.dp),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number
-                    ),
-                    list = (1..20).map { it.toString() },
-                    label = "Valor",
-                    select = {
-                        // Send data value to viewmodel
-                        if (it.isNotEmpty())
-                            yearsServices = it.toInt()
-
-                    })
-                onYearsServices(yearsServices)
-            }
-            "Especialidad" -> {
-                OutlinedTextField(
-                    textStyle = TextStyle(color = MaterialTheme.colors.onBackground),
-                    modifier = Modifier
-                        .fillMaxWidth(0.6f),
-                    value = specialty,
-                    onValueChange = {
-                        if (it.isNotEmpty())
-                            specialty = it
-                    }, label = {
-                        Text(text = "Valor")
-                    })
-                onSpecialty(specialty)
             }
         }
     }

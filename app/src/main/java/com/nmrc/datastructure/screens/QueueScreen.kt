@@ -8,17 +8,27 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.outlined.SkipNext
+import androidx.compose.material.icons.rounded.Person
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.nmrc.datastructure.components.ActionIconBottom
+import com.nmrc.datastructure.components.DropDownMenu
 import com.nmrc.datastructure.components.Header
 import com.nmrc.datastructure.components.queue_screen.FormPatient
-import com.nmrc.datastructure.ui.theme.BlueVariant
-import com.nmrc.datastructure.ui.theme.Gray
+import com.nmrc.datastructure.components.queue_screen.PatientCard
+import com.nmrc.datastructure.components.queue_screen.PatientDataStream
+import com.nmrc.datastructure.model.Patient
+import com.nmrc.datastructure.ui.theme.*
+import com.nmrc.datastructure.util.toList
 import com.nmrc.datastructure.viewmodel.MainViewModel
 
 @ExperimentalMaterialApi
@@ -31,6 +41,18 @@ fun QueueScreen(
 
     val state = rememberBottomSheetScaffoldState()
     val color = if (isDark) BlueVariant else Gray
+
+    var tempPatient by remember {
+        mutableStateOf(
+            Patient(
+                "",
+                "",
+                0,
+                'm',
+                ""
+            )
+        )
+    }
 
     BottomSheetScaffold(modifier = Modifier.fillMaxSize(), content = {
         LazyColumn(
@@ -61,7 +83,16 @@ fun QueueScreen(
                 )
 
                 FormPatient(enqueue = { firstName, lastName, age, gender, dni ->
-
+                    mainViewModel.list.value.enqueue(
+                        Patient(
+                            firstName,
+                            lastName,
+                            age,
+                            gender,
+                            dni
+                        )
+                    )
+                    mainViewModel.statusChange()
                 })
 
             }
@@ -91,10 +122,136 @@ fun QueueScreen(
                 }
 
 
+                Header(
+                    title = "Contar",
+                    subtitle = "Seleccione el caso de uso"
+                )
+
+                PatientDataStream(
+                    label = "Contar por",
+                    onAge = { restrict, age ->
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        ActionIconBottom(
+                            icon = Icons.Rounded.Person,
+                            tint = Orange,
+                            content =
+                            if (restrict) {
+                                mainViewModel.list.value.count { it.age <= age }.toString()
+                            } else {
+                                mainViewModel.list.value.count { it.age >= age }.toString()
+                            }
+                        ) {}
+                    },
+                    onGender = { gender ->
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        ActionIconBottom(
+                            icon = Icons.Rounded.Person,
+                            tint = Orange,
+                            content =
+                            mainViewModel.list.value.count { it.gender == gender }
+                                .toString()
+                        ) {}
+                    }
+                )
+
+                Header(
+                    title = "Filtrar",
+                    subtitle = "Seleccione el caso de uso"
+                )
 
 
 
+                Header(
+                    title = "Modificar Campos",
+                    subtitle = "Seleccione el doctor a modificar"
+                )
 
+
+                DropDownMenu(
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .height(64.dp),
+                    list = mainViewModel.list.value.toList().map { it.lastName },
+                    label = "Doctores",
+                    select = { lastName ->
+                        mainViewModel.list.value.forEach { patient ->
+                            if (patient.lastName.equals(lastName)) {
+                                tempPatient = patient
+                                return@forEach
+                            }
+                        }
+                    })
+
+//                if (tempPatient.lastName.isNotEmpty()) {
+//                    FormDoc(addEnd = { _, _, _, _, _, _ -> },
+//                        addStart = { _, _, _, _, _, _ -> },
+//                        onEdit = true,
+//                        edit = { firstName, lastName, age, gender, yearsOfService, speciality ->
+//                            mainViewModel.list.value.add(
+//                                mainViewModel.list.value.indexOf(tempDoc),
+//                                Doctor(
+//                                    firstName,
+//                                    lastName,
+//                                    age,
+//                                    gender,
+//                                    yearsOfService,
+//                                    speciality
+//                                )
+//                            )
+//                            mainViewModel.list.value.remove(tempDoc)
+//                            mainViewModel.hasBeenAdded()
+//                            tempPatient.lastName = ""
+//                        })
+//                }
+
+
+                Header(
+                    title = "COLA DE PACIENTES",
+                    subtitle = ""
+                )
+                Text(
+                    text = "Total : ${mainViewModel.count.value}",
+                    color = Color.Transparent,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 16.dp),
+                    textAlign = TextAlign.End
+                )
+
+                ActionIconBottom(
+                    Modifier
+                        .fillMaxWidth()
+                        .align(CenterHorizontally),
+                    icon = Icons.Outlined.SkipNext,
+                    tint = if(isDark) Green else GreenDarkMaterial,
+                    content = "Desencolar") {
+
+                    mainViewModel.list.value.dequeue()
+                    mainViewModel.statusChange()
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                LinearProgressIndicator(
+                    progress = mainViewModel.list.value.length()/100f,
+                    color = if(isDark) Green else GreenDarkMaterial,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(32.dp)
+                        .clip(CircleShape))
+
+                mainViewModel.list.value.toList().forEach { patient ->
+                    PatientCard(
+                        firstName = patient.firstName,
+                        lastName = patient.lastName,
+                        age = patient.age,
+                        gender = patient.gender,
+                        dni = patient.dni
+                    )
+                }
             }
         }
     },  scaffoldState = state,
