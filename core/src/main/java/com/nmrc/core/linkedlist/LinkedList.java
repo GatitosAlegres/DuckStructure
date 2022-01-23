@@ -31,8 +31,8 @@ public class LinkedList<E> extends Structure<E> {
             Node<E> temp = head;
             node.setNext(temp);
             this.head = node;
-            size++;
         }
+        size++;
     }
 
     public void addEnd(E element) {

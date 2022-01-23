@@ -81,7 +81,12 @@ fun DoctorCard(
                         )
                     )
                     Row {
-                        Text(text = "Edad: $age")
+                        Text(
+                            text = "Edad: $age",
+                            style = TextStyle(
+                                color = MaterialTheme.colors.onBackground
+                            )
+                        )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = if (gender == 'm') "Sexo: M" else "Sexo: F",
@@ -93,7 +98,10 @@ fun DoctorCard(
                         color = MaterialTheme.colors.onBackground
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Especialidad: $specialty", color = MaterialTheme.colors.onBackground)
+                    Text(
+                        text = "Especialidad: $specialty",
+                        color = MaterialTheme.colors.onBackground
+                    )
                 }
             }
             Divider(modifier = Modifier.padding(8.dp))

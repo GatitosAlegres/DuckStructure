@@ -1,5 +1,6 @@
 package com.nmrc.datastructure.screens
 
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,7 +19,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.nmrc.core.linkedlist.LinkedList
 import com.nmrc.datastructure.components.*
 import com.nmrc.datastructure.components.linkedlist_screen.DataStream
 import com.nmrc.datastructure.components.linkedlist_screen.DoctorCard
@@ -26,6 +26,7 @@ import com.nmrc.datastructure.components.linkedlist_screen.FormDoc
 import com.nmrc.datastructure.components.linkedlist_screen.SortDataStream
 import com.nmrc.datastructure.model.Doctor
 import com.nmrc.datastructure.ui.theme.*
+import com.nmrc.datastructure.util.toList
 import com.nmrc.datastructure.viewmodel.LListViewModel
 
 @ExperimentalMaterialApi
@@ -56,14 +57,13 @@ fun LinkedListScreen(
         LazyColumn(
             modifier = Modifier
                 .padding(
-                    top = 64.dp,
                     start = 16.dp,
                     end = 16.dp,
                     bottom = 64.dp
                 )
         ) {
             item {
-
+                Spacer(modifier = Modifier.height(64.dp))
                 IconButton(onClick = {
                     navController.navigate(Screen.MainScreen.route)
                 }) {
@@ -80,8 +80,6 @@ fun LinkedListScreen(
                     title = "Listas Enlazadas",
                     subtitle = "Doctores"
                 )
-
-
 
                 FormDoc(addEnd = { firstName, lastName, age, gender, yearsOfService, specialty ->
                     viewModel.list.value.addEnd(
@@ -202,26 +200,38 @@ fun LinkedListScreen(
                     onAge = { restrict, value ->
 
                         if (restrict)
-                            LListViewModel.toList(
-                                viewModel.list.value.filter {
-                                    it.age <= value
-                                } as LinkedList<Doctor>
-                            ).forEach { doctor ->
-                                DoctorCard(
-                                    firstName = doctor.firstName,
-                                    lastName = doctor.lastName,
-                                    age = doctor.age,
-                                    gender = doctor.gender,
-                                    yearsOfService = doctor.yearsOfService,
-                                    specialty = doctor.specialty
-                                )
-                            }
+                            viewModel.list.value.filter {
+                                it.age <= value
+                            }.toList()
+                                .forEach { doctor ->
+                                    DoctorCard(
+                                        firstName = doctor.firstName,
+                                        lastName = doctor.lastName,
+                                        age = doctor.age,
+                                        gender = doctor.gender,
+                                        yearsOfService = doctor.yearsOfService,
+                                        specialty = doctor.specialty
+                                    )
+                                }
                         else
-                            LListViewModel.toList(
-                                viewModel.list.value.filter {
-                                    it.age >= value
-                                } as LinkedList<Doctor>
-                            ).forEach { doctor ->
+                            viewModel.list.value.filter {
+                                it.age >= value
+                            }.toList()
+                                .forEach { doctor ->
+                                    DoctorCard(
+                                        firstName = doctor.firstName,
+                                        lastName = doctor.lastName,
+                                        age = doctor.age,
+                                        gender = doctor.gender,
+                                        yearsOfService = doctor.yearsOfService,
+                                        specialty = doctor.specialty
+                                    )
+                                }
+                    }, onYearsServices = { yearsOfServices ->
+                        viewModel.list.value.filter {
+                            it.yearsOfService == yearsOfServices
+                        }.toList()
+                            .forEach { doctor ->
                                 DoctorCard(
                                     firstName = doctor.firstName,
                                     lastName = doctor.lastName,
@@ -231,52 +241,35 @@ fun LinkedListScreen(
                                     specialty = doctor.specialty
                                 )
                             }
-                    }, onYearsServices = { yearsOfServices ->
-                        LListViewModel.toList(
-                            viewModel.list.value.filter {
-                                it.yearsOfService == yearsOfServices
-                            } as LinkedList<Doctor>
-                        ).forEach { doctor ->
-                            DoctorCard(
-                                firstName = doctor.firstName,
-                                lastName = doctor.lastName,
-                                age = doctor.age,
-                                gender = doctor.gender,
-                                yearsOfService = doctor.yearsOfService,
-                                specialty = doctor.specialty
-                            )
-                        }
                     }, onGender = { gender ->
-                        LListViewModel.toList(
-                            viewModel.list.value.filter {
-                                it.gender == gender
-                            } as LinkedList<Doctor>
-                        ).forEach { doctor ->
-                            DoctorCard(
-                                firstName = doctor.firstName,
-                                lastName = doctor.lastName,
-                                age = doctor.age,
-                                gender = doctor.gender,
-                                yearsOfService = doctor.yearsOfService,
-                                specialty = doctor.specialty
-                            )
-                        }
+                        viewModel.list.value.filter {
+                            it.gender == gender
+                        }.toList()
+                            .forEach { doctor ->
+                                DoctorCard(
+                                    firstName = doctor.firstName,
+                                    lastName = doctor.lastName,
+                                    age = doctor.age,
+                                    gender = doctor.gender,
+                                    yearsOfService = doctor.yearsOfService,
+                                    specialty = doctor.specialty
+                                )
+                            }
                     },
                     onSpecialty = { specialty ->
-                        LListViewModel.toList(
-                            viewModel.list.value.filter {
-                                it.specialty == specialty
-                            } as LinkedList<Doctor>
-                        ).forEach { doctor ->
-                            DoctorCard(
-                                firstName = doctor.firstName,
-                                lastName = doctor.lastName,
-                                age = doctor.age,
-                                gender = doctor.gender,
-                                yearsOfService = doctor.yearsOfService,
-                                specialty = doctor.specialty
-                            )
-                        }
+                        viewModel.list.value.filter {
+                            it.specialty == specialty
+                        }.toList()
+                            .forEach { doctor ->
+                                DoctorCard(
+                                    firstName = doctor.firstName,
+                                    lastName = doctor.lastName,
+                                    age = doctor.age,
+                                    gender = doctor.gender,
+                                    yearsOfService = doctor.yearsOfService,
+                                    specialty = doctor.specialty
+                                )
+                            }
                     })
 
 
@@ -292,34 +285,33 @@ fun LinkedListScreen(
                             viewModel.list.value.sort { doc1, doc2 ->
                                 doc1.lastName.compareTo(doc2.lastName)
                             }
-                            LListViewModel.toList(
-                                viewModel.list.value
-                            ).forEach { doctor ->
-                                DoctorCard(
-                                    firstName = doctor.firstName,
-                                    lastName = doctor.lastName,
-                                    age = doctor.age,
-                                    gender = doctor.gender,
-                                    yearsOfService = doctor.yearsOfService,
-                                    specialty = doctor.specialty
-                                )
-                            }
+
+                            viewModel.list.value
+                                .toList().forEach { doctor ->
+                                    DoctorCard(
+                                        firstName = doctor.firstName,
+                                        lastName = doctor.lastName,
+                                        age = doctor.age,
+                                        gender = doctor.gender,
+                                        yearsOfService = doctor.yearsOfService,
+                                        specialty = doctor.specialty
+                                    )
+                                }
                         } else {
                             viewModel.list.value.sort { doc1, doc2 ->
                                 doc2.lastName.compareTo(doc1.lastName)
                             }
-                            LListViewModel.toList(
-                                viewModel.list.value
-                            ).forEach { doctor ->
-                                DoctorCard(
-                                    firstName = doctor.firstName,
-                                    lastName = doctor.lastName,
-                                    age = doctor.age,
-                                    gender = doctor.gender,
-                                    yearsOfService = doctor.yearsOfService,
-                                    specialty = doctor.specialty
-                                )
-                            }
+                            viewModel.list.value
+                                .toList().forEach { doctor ->
+                                    DoctorCard(
+                                        firstName = doctor.firstName,
+                                        lastName = doctor.lastName,
+                                        age = doctor.age,
+                                        gender = doctor.gender,
+                                        yearsOfService = doctor.yearsOfService,
+                                        specialty = doctor.specialty
+                                    )
+                                }
                         }
                     },
                     onAge = { asc ->
@@ -327,34 +319,36 @@ fun LinkedListScreen(
                             viewModel.list.value.sort { doc1, doc2 ->
                                 doc1.age - doc2.age
                             }
-                            LListViewModel.toList(
-                                viewModel.list.value
-                            ).forEach { doctor ->
-                                DoctorCard(
-                                    firstName = doctor.firstName,
-                                    lastName = doctor.lastName,
-                                    age = doctor.age,
-                                    gender = doctor.gender,
-                                    yearsOfService = doctor.yearsOfService,
-                                    specialty = doctor.specialty
-                                )
-                            }
+
+                            viewModel.list.value
+                                .toList()
+                                .forEach { doctor ->
+                                    DoctorCard(
+                                        firstName = doctor.firstName,
+                                        lastName = doctor.lastName,
+                                        age = doctor.age,
+                                        gender = doctor.gender,
+                                        yearsOfService = doctor.yearsOfService,
+                                        specialty = doctor.specialty
+                                    )
+                                }
                         } else {
                             viewModel.list.value.sort { doc1, doc2 ->
                                 doc2.age - doc1.age
                             }
-                            LListViewModel.toList(
-                                viewModel.list.value
-                            ).forEach { doctor ->
-                                DoctorCard(
-                                    firstName = doctor.firstName,
-                                    lastName = doctor.lastName,
-                                    age = doctor.age,
-                                    gender = doctor.gender,
-                                    yearsOfService = doctor.yearsOfService,
-                                    specialty = doctor.specialty
-                                )
-                            }
+
+                            viewModel.list.value
+                                .toList()
+                                .forEach { doctor ->
+                                    DoctorCard(
+                                        firstName = doctor.firstName,
+                                        lastName = doctor.lastName,
+                                        age = doctor.age,
+                                        gender = doctor.gender,
+                                        yearsOfService = doctor.yearsOfService,
+                                        specialty = doctor.specialty
+                                    )
+                                }
                         }
 
                     },
@@ -363,34 +357,35 @@ fun LinkedListScreen(
                             viewModel.list.value.sort { doc1, doc2 ->
                                 doc1.yearsOfService - doc2.yearsOfService
                             }
-                            LListViewModel.toList(
-                                viewModel.list.value
-                            ).forEach { doctor ->
-                                DoctorCard(
-                                    firstName = doctor.firstName,
-                                    lastName = doctor.lastName,
-                                    age = doctor.age,
-                                    gender = doctor.gender,
-                                    yearsOfService = doctor.yearsOfService,
-                                    specialty = doctor.specialty
-                                )
-                            }
+
+                            viewModel.list.value
+                                .toList()
+                                .forEach { doctor ->
+                                    DoctorCard(
+                                        firstName = doctor.firstName,
+                                        lastName = doctor.lastName,
+                                        age = doctor.age,
+                                        gender = doctor.gender,
+                                        yearsOfService = doctor.yearsOfService,
+                                        specialty = doctor.specialty
+                                    )
+                                }
                         } else {
                             viewModel.list.value.sort { doc1, doc2 ->
                                 doc2.yearsOfService - doc1.yearsOfService
                             }
-                            LListViewModel.toList(
-                                viewModel.list.value
-                            ).forEach { doctor ->
-                                DoctorCard(
-                                    firstName = doctor.firstName,
-                                    lastName = doctor.lastName,
-                                    age = doctor.age,
-                                    gender = doctor.gender,
-                                    yearsOfService = doctor.yearsOfService,
-                                    specialty = doctor.specialty
-                                )
-                            }
+                            viewModel.list.value
+                                .toList()
+                                .forEach { doctor ->
+                                    DoctorCard(
+                                        firstName = doctor.firstName,
+                                        lastName = doctor.lastName,
+                                        age = doctor.age,
+                                        gender = doctor.gender,
+                                        yearsOfService = doctor.yearsOfService,
+                                        specialty = doctor.specialty
+                                    )
+                                }
                         }
                     },
                     onGender = { gender ->
@@ -398,34 +393,36 @@ fun LinkedListScreen(
                             viewModel.list.value.sort { doc1, doc2 ->
                                 doc2.gender.compareTo(doc1.gender)
                             }
-                            LListViewModel.toList(
-                                viewModel.list.value
-                            ).forEach { doctor ->
-                                DoctorCard(
-                                    firstName = doctor.firstName,
-                                    lastName = doctor.lastName,
-                                    age = doctor.age,
-                                    gender = doctor.gender,
-                                    yearsOfService = doctor.yearsOfService,
-                                    specialty = doctor.specialty
-                                )
-                            }
+
+                            viewModel.list.value
+                                .toList()
+                                .forEach { doctor ->
+                                    DoctorCard(
+                                        firstName = doctor.firstName,
+                                        lastName = doctor.lastName,
+                                        age = doctor.age,
+                                        gender = doctor.gender,
+                                        yearsOfService = doctor.yearsOfService,
+                                        specialty = doctor.specialty
+                                    )
+                                }
                         } else {
                             viewModel.list.value.sort { doc1, doc2 ->
                                 doc1.gender.compareTo(doc2.gender)
                             }
-                            LListViewModel.toList(
-                                viewModel.list.value
-                            ).forEach { doctor ->
-                                DoctorCard(
-                                    firstName = doctor.firstName,
-                                    lastName = doctor.lastName,
-                                    age = doctor.age,
-                                    gender = doctor.gender,
-                                    yearsOfService = doctor.yearsOfService,
-                                    specialty = doctor.specialty
-                                )
-                            }
+
+                            viewModel.list.value
+                                .toList()
+                                .forEach { doctor ->
+                                    DoctorCard(
+                                        firstName = doctor.firstName,
+                                        lastName = doctor.lastName,
+                                        age = doctor.age,
+                                        gender = doctor.gender,
+                                        yearsOfService = doctor.yearsOfService,
+                                        specialty = doctor.specialty
+                                    )
+                                }
                         }
                     },
                     onSpecialty = { asc ->
@@ -433,34 +430,36 @@ fun LinkedListScreen(
                             viewModel.list.value.sort { doc1, doc2 ->
                                 doc1.specialty.compareTo(doc2.specialty)
                             }
-                            LListViewModel.toList(
-                                viewModel.list.value
-                            ).forEach { doctor ->
-                                DoctorCard(
-                                    firstName = doctor.firstName,
-                                    lastName = doctor.lastName,
-                                    age = doctor.age,
-                                    gender = doctor.gender,
-                                    yearsOfService = doctor.yearsOfService,
-                                    specialty = doctor.specialty
-                                )
-                            }
+
+                            viewModel.list.value
+                                .toList()
+                                .forEach { doctor ->
+                                    DoctorCard(
+                                        firstName = doctor.firstName,
+                                        lastName = doctor.lastName,
+                                        age = doctor.age,
+                                        gender = doctor.gender,
+                                        yearsOfService = doctor.yearsOfService,
+                                        specialty = doctor.specialty
+                                    )
+                                }
                         } else {
                             viewModel.list.value.sort { doc1, doc2 ->
                                 doc2.specialty.compareTo(doc1.specialty)
                             }
-                            LListViewModel.toList(
-                                viewModel.list.value
-                            ).forEach { doctor ->
-                                DoctorCard(
-                                    firstName = doctor.firstName,
-                                    lastName = doctor.lastName,
-                                    age = doctor.age,
-                                    gender = doctor.gender,
-                                    yearsOfService = doctor.yearsOfService,
-                                    specialty = doctor.specialty
-                                )
-                            }
+
+                            viewModel.list.value
+                                .toList()
+                                .forEach { doctor ->
+                                    DoctorCard(
+                                        firstName = doctor.firstName,
+                                        lastName = doctor.lastName,
+                                        age = doctor.age,
+                                        gender = doctor.gender,
+                                        yearsOfService = doctor.yearsOfService,
+                                        specialty = doctor.specialty
+                                    )
+                                }
                         }
                     })
 
@@ -474,7 +473,7 @@ fun LinkedListScreen(
                     modifier = Modifier
                         .fillMaxWidth(0.5f)
                         .height(64.dp),
-                    list = LListViewModel.toList(viewModel.list.value).map { it.lastName },
+                    list = viewModel.list.value.toList().map { it.lastName },
                     label = "Doctores",
                     select = { lastName ->
                         viewModel.list.value.forEach { doctor ->
@@ -490,7 +489,6 @@ fun LinkedListScreen(
                         addStart = { _, _, _, _, _, _ -> },
                         onEdit = true,
                         edit = { firstName, lastName, age, gender, yearsOfService, speciality ->
-                            viewModel.list.value.remove(tempDoc)
                             viewModel.list.value.add(
                                 viewModel.list.value.indexOf(tempDoc),
                                 Doctor(
@@ -502,8 +500,9 @@ fun LinkedListScreen(
                                     speciality
                                 )
                             )
+                            viewModel.list.value.remove(tempDoc)
                             viewModel.hasBeenAdded()
-                            tempDoc.lastName=""
+                            tempDoc.lastName = ""
                         })
                 }
 
@@ -525,7 +524,7 @@ fun LinkedListScreen(
                     textAlign = TextAlign.End
                 )
 
-                LListViewModel.toList(viewModel.list.value).forEach { doctor ->
+                viewModel.list.value.toList().forEach { doctor ->
                     DoctorCard(
                         firstName = doctor.firstName,
                         lastName = doctor.lastName,
@@ -537,7 +536,6 @@ fun LinkedListScreen(
                 }
             }
         }
-
     }, scaffoldState = state,
         sheetShape = RoundedCornerShape(16.dp),
         sheetBackgroundColor = color,

@@ -7,11 +7,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.nmrc.datastructure.screens.*
+import com.nmrc.datastructure.viewmodel.MainViewModel
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @Composable
-fun Navigation() {
+fun Navigation(mainViewModel: MainViewModel) {
 
     val navController = rememberNavController()
 
@@ -32,11 +33,15 @@ fun Navigation() {
         }
 
         composable(route = Screen.QueueScreen.route) {
-            QueueScreen(navController = navController)
+            QueueScreen(
+                navController = navController,
+                mainViewModel = mainViewModel)
         }
 
         composable(route = Screen.StackScreen.route) {
-            StackScreen(navController = navController)
+            StackScreen(
+                navController = navController,
+                mainViewModel = mainViewModel)
         }
 
         composable(route = Screen.TreeScreen.route) {
