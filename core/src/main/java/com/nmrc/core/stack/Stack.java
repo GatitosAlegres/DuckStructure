@@ -133,6 +133,19 @@ public class Stack<E> extends Structure<E> {
     }
 
     @Override
+    public int indexOf(E instance) {
+        int index = 0;
+        Node<E> temp = top;
+        while (temp != null) {
+            if (instance.equals(temp.getElement()))
+                return index;
+            index++;
+            temp = temp.getNext();
+        }
+        return -1;
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         Node<E> temp = top;

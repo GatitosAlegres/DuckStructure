@@ -24,4 +24,6 @@ public interface StructureEssentials<E> {
 
     <T> T reduce(T identity, BiFunction<T, ? super E, T> accumulator);
 
+    int indexOf(E instance);
+
 }
