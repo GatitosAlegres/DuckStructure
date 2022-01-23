@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.nmrc.datastructure.ui.theme.Aqua
 import com.nmrc.datastructure.ui.theme.BlueDarkMaterial
 import com.nmrc.datastructure.ui.theme.WhiteMaterial
 
@@ -16,10 +17,11 @@ import com.nmrc.datastructure.ui.theme.WhiteMaterial
 fun CardDetail(
     content: @Composable ColumnScope.() -> Unit,
     actionContent: @Composable BoxScope.() -> Unit = {},
-    detailContent: @Composable BoxScope.() -> Unit = {}
+    detailContent: @Composable BoxScope.() -> Unit = {},
+    isDark: Boolean = isSystemInDarkTheme()
 ) {
 
-    val color = if (isSystemInDarkTheme()) BlueDarkMaterial else WhiteMaterial
+    val color = if (isDark) Aqua else WhiteMaterial
 
     Column(modifier = Modifier
         .background(color)

@@ -1,6 +1,7 @@
 package com.nmrc.datastructure.components
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
@@ -14,12 +15,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.nmrc.datastructure.ui.theme.Blue
+import com.nmrc.datastructure.ui.theme.Green
+import com.nmrc.datastructure.ui.theme.Orange
+import com.nmrc.datastructure.ui.theme.Yellow
 
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @Composable
 fun CardX(
     modifier: Modifier = Modifier,
+    isDark: Boolean = isSystemInDarkTheme(),
     title: String,
     painter: Painter,
     description: String,
@@ -48,7 +54,7 @@ fun CardX(
 
             ActionIconBottom(
                 icon = Icons.Rounded.Info,
-                tint = Color.Green,
+                tint = if(isDark) Yellow else Orange,
                 content = "",
                 onClick = onDetail
             )
@@ -57,7 +63,7 @@ fun CardX(
 
             ActionIconBottom(
                 icon = Icons.Outlined.PlayArrow,
-                tint = Color.Blue,
+                tint = if(isDark) Green else Blue,
                 content = "Go",
                 onClick = onAction
             )

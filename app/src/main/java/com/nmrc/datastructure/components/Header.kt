@@ -1,9 +1,6 @@
 package com.nmrc.datastructure.components
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.BoxScope
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -14,7 +11,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nmrc.datastructure.ui.theme.BlueMaterial
 import com.nmrc.datastructure.ui.theme.BlueVariant
 import com.nmrc.datastructure.ui.theme.Green
 
@@ -24,7 +20,7 @@ fun Header(
     subtitleModifier: Modifier = Modifier,
     title: String,
     subtitle: String,
-    content : @Composable RowScope.() -> Unit = {},
+    weightSubtitle: FontWeight = FontWeight.Normal,
     titleColor: Color = MaterialTheme.colors.onBackground,
     isDark: Boolean = isSystemInDarkTheme()) {
     Text(
@@ -37,16 +33,13 @@ fun Header(
         )
     )
 
-    Row {
-        content()
-    }
-
     Text(
         text = subtitle,
         modifier = subtitleModifier.padding(16.dp),
         style = TextStyle(
             fontSize = 16.sp,
-            color = if (isDark) Green else BlueVariant
+            color = if (isDark) Green else BlueVariant,
+            fontWeight = weightSubtitle
         )
     )
 }

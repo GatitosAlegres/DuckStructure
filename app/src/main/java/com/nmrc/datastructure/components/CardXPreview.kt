@@ -31,7 +31,7 @@ fun BoxScope.DefaultPreviewCard(
     Image(
         modifier = modifier
             .fillMaxWidth()
-            .height(150.dp)
+            .height(190.dp)
             .clip(shape),
         painter = painter,
         contentDescription = null,
