@@ -25,9 +25,7 @@ import com.nmrc.datastructure.components.linkedlist_screen.DoctorCard
 import com.nmrc.datastructure.components.linkedlist_screen.FormDoc
 import com.nmrc.datastructure.components.linkedlist_screen.SortDataStream
 import com.nmrc.datastructure.model.Doctor
-import com.nmrc.datastructure.ui.theme.BlueLight
-import com.nmrc.datastructure.ui.theme.BlueVariant
-import com.nmrc.datastructure.ui.theme.Orange
+import com.nmrc.datastructure.ui.theme.*
 import com.nmrc.datastructure.viewmodel.LListViewModel
 
 @ExperimentalMaterialApi
@@ -39,7 +37,7 @@ fun LinkedListScreen(
 ) {
 
     val state = rememberBottomSheetScaffoldState()
-    val color = if (isDark) BlueVariant else BlueLight
+    val color = if (isDark) BlueVariant else Gray
 
     var tempDoc by remember {
         mutableStateOf(
@@ -520,6 +518,7 @@ fun LinkedListScreen(
                 )
                 Text(
                     text = "Total : ${viewModel.count.value}",
+                    color = Color.Transparent,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(end = 16.dp),
