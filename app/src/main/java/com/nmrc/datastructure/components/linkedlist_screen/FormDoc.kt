@@ -19,10 +19,10 @@ import com.nmrc.datastructure.ui.theme.Orange
 
 @Composable
 fun FormDoc(
-    addEnd: (String, String, Char, Int, Int, String) -> Unit,
-    addStart: (String, String, Char, Int, Int, String) -> Unit,
+    addEnd: (String, String, Int, Char, Int, String) -> Unit,
+    addStart: (String, String, Int, Char, Int, String) -> Unit,
     onEdit: Boolean = false,
-    edit: ((String, String, Char, Int, Int, String) -> Unit)? = null
+    edit: ((String, String, Int, Char, Int, String) -> Unit)? = null
 ) {
     var firstName1 by remember { mutableStateOf("") }
     var lastName1 by remember { mutableStateOf("") }
@@ -118,7 +118,6 @@ fun FormDoc(
             onClick = {
                 firstName1 = ""
                 lastName1 = ""
-                gender1 = ' '
                 age1 = 0
                 yearsOfService1 = 0
                 specialty1 = ""
@@ -134,14 +133,13 @@ fun FormDoc(
                     addEnd(
                         firstName1,
                         lastName1,
-                        gender1,
                         age1,
+                        gender1,
                         yearsOfService1,
                         specialty1
                     )
                     firstName1 = ""
                     lastName1 = ""
-                    gender1 = ' '
                     age1 = 0
                     yearsOfService1 = 0
                     specialty1 = ""
@@ -156,14 +154,13 @@ fun FormDoc(
                     addStart(
                         firstName1,
                         lastName1,
-                        gender1,
                         age1,
+                        gender1,
                         yearsOfService1,
                         specialty1
                     )
                     firstName1 = ""
                     lastName1 = ""
-                    gender1 = ' '
                     age1 = 0
                     yearsOfService1 = 0
                     specialty1 = ""
@@ -179,15 +176,14 @@ fun FormDoc(
                         edit(
                             firstName1,
                             lastName1,
-                            gender1,
                             age1,
+                            gender1,
                             yearsOfService1,
                             specialty1
                         )
                     }
                     firstName1 = ""
                     lastName1 = ""
-                    gender1 = ' '
                     age1 = 0
                     yearsOfService1 = 0
                     specialty1 = ""

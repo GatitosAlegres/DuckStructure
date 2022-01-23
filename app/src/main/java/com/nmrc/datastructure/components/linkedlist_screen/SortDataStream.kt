@@ -1,5 +1,6 @@
 package com.nmrc.datastructure.components.linkedlist_screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,6 +13,7 @@ import com.nmrc.datastructure.components.DropDownMenu
 @Composable
 fun SortDataStream(
     label: String,
+    onLastName : @Composable (asc: Boolean) -> Unit,
     onGender: @Composable (Char) -> Unit,
     onAge: @Composable (asc: Boolean) -> Unit,
     onYearsServices: @Composable (asc: Boolean) -> Unit,
@@ -24,6 +26,11 @@ fun SortDataStream(
     var gender by remember {
         mutableStateOf('m')
     }
+
+    var lastName by remember {
+        mutableStateOf(false)
+    }
+
     var age by remember {
         mutableStateOf(false)
     }
@@ -42,7 +49,7 @@ fun SortDataStream(
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number
         ),
-        list = listOf("Sexo", "Edad", "Años de Servicio", "Especialidad"),
+        list = listOf("Apellidos","Sexo", "Edad", "Años de Servicio", "Especialidad"),
         label = label,
         select = {
             count = if (it.isNotEmpty())
@@ -52,13 +59,30 @@ fun SortDataStream(
 
     if (count.isNotEmpty()) {
         when (count) {
+            "Apellidos" -> {
+                DropDownMenu(
+                    modifier = Modifier.fillMaxWidth(0.4f),
+                    list = listOf("Ascendente", "Descendente"),
+                    label = "Orden",
+                    select = {
+                        // Send data value to viewmodel
+                        if (it.isNotEmpty())
+                            when (it) {
+                                "Ascendente" -> lastName = true
+                                "Descendente" -> lastName = false
+                            }
+                    })
+
+                onLastName(lastName)
+            }
             "Sexo" -> {
                 DropDownMenu(
                     modifier = Modifier.fillMaxWidth(0.4f),
                     list = listOf("Masculino", "Femenino"),
                     label = "Sexo",
                     select = {
-                        gender = it.lowercase()[0]
+                        if (it.isNotEmpty())
+                            gender = it.lowercase()[0]
                     })
                 onGender(gender)
             }

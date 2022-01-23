@@ -1,5 +1,6 @@
 package com.nmrc.datastructure.components.linkedlist_screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.text.KeyboardOptions
@@ -64,7 +65,7 @@ fun DataStream(
                     list = listOf("Masculino", "Femenino"),
                     label = "Sexo",
                     select = {
-                        gender = it.lowercase()[0]
+                        gender = it[0].lowercaseChar()
                     })
                 onGender(gender)
             }

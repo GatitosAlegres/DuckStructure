@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
@@ -15,8 +14,6 @@ import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -87,7 +84,7 @@ fun LinkedListScreen(
 
 
 
-                FormDoc(addEnd = { firstName, lastName, gender, age, yearsOfService, specialty ->
+                FormDoc(addEnd = { firstName, lastName, age, gender, yearsOfService, specialty ->
                     viewModel.list.value.addEnd(
                         Doctor(
                             firstName,
@@ -100,7 +97,7 @@ fun LinkedListScreen(
                     )
                     viewModel.hasBeenAdded()
 
-                }, addStart = { firstName, lastName, gender, age, yearsOfService, specialty ->
+                }, addStart = { firstName, lastName, age, gender, yearsOfService, specialty ->
                     viewModel.list.value.addStart(
                         Doctor(
                             firstName,
@@ -143,7 +140,6 @@ fun LinkedListScreen(
                 Header(
                     title = "Contar",
                     subtitle = "Seleccione el caso de uso"
-
                 )
 
 
@@ -181,8 +177,9 @@ fun LinkedListScreen(
                         ActionIconBottom(
                             icon = Icons.Rounded.Person,
                             tint = Orange,
-                            content =
-                            viewModel.list.value.count { it.gender == gender }.toString()
+                            content = viewModel.list.value.count {
+                                it.gender == gender
+                            }.toString()
                         ) {}
                     }, onSpecialty = { specialty ->
                         Spacer(modifier = Modifier.height(8.dp))
@@ -291,6 +288,41 @@ fun LinkedListScreen(
 
                 SortDataStream(
                     label = "Ordenar por",
+                    onLastName = { asc ->
+                        if (asc) {
+                            viewModel.list.value.sort { doc1, doc2 ->
+                                doc1.lastName.compareTo(doc2.lastName)
+                            }
+                            LListViewModel.toList(
+                                viewModel.list.value
+                            ).forEach { doctor ->
+                                DoctorCard(
+                                    firstName = doctor.firstName,
+                                    lastName = doctor.lastName,
+                                    age = doctor.age,
+                                    gender = doctor.gender,
+                                    yearsOfService = doctor.yearsOfService,
+                                    specialty = doctor.specialty
+                                )
+                            }
+                        } else {
+                            viewModel.list.value.sort { doc1, doc2 ->
+                                doc2.lastName.compareTo(doc1.lastName)
+                            }
+                            LListViewModel.toList(
+                                viewModel.list.value
+                            ).forEach { doctor ->
+                                DoctorCard(
+                                    firstName = doctor.firstName,
+                                    lastName = doctor.lastName,
+                                    age = doctor.age,
+                                    gender = doctor.gender,
+                                    yearsOfService = doctor.yearsOfService,
+                                    specialty = doctor.specialty
+                                )
+                            }
+                        }
+                    },
                     onAge = { asc ->
                         if (asc) {
                             viewModel.list.value.sort { doc1, doc2 ->
@@ -365,7 +397,7 @@ fun LinkedListScreen(
                     onGender = { gender ->
                         if (gender == 'm') {
                             viewModel.list.value.sort { doc1, doc2 ->
-                                doc1.gender.compareTo(doc2.gender)
+                                doc2.gender.compareTo(doc1.gender)
                             }
                             LListViewModel.toList(
                                 viewModel.list.value
@@ -381,7 +413,7 @@ fun LinkedListScreen(
                             }
                         } else {
                             viewModel.list.value.sort { doc1, doc2 ->
-                                doc2.gender.compareTo(doc1.gender)
+                                doc1.gender.compareTo(doc2.gender)
                             }
                             LListViewModel.toList(
                                 viewModel.list.value
