@@ -1,10 +1,10 @@
 package com.nmrc.datastructure.components
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -17,6 +17,9 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.toSize
+import com.nmrc.datastructure.ui.theme.BlueLight
+import com.nmrc.datastructure.ui.theme.BlueVariantDark
+import com.nmrc.datastructure.ui.theme.WhiteMaterial
 
 @Composable
 fun DropDownMenu(
@@ -24,7 +27,8 @@ fun DropDownMenu(
                  list: List<String>,
                  label: String,
                  keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-                 select: (String) -> Unit) {
+                 select: (String) -> Unit,
+                 isDark: Boolean = isSystemInDarkTheme()) {
 
     var expanded by remember { mutableStateOf(false) }
     val suggestions = list
@@ -37,6 +41,7 @@ fun DropDownMenu(
     else
         Icons.Filled.KeyboardArrowDown
 
+    val bgColor = if(isDark) BlueVariantDark else WhiteMaterial
 
     Column(modifier = modifier) {
         OutlinedTextField(
@@ -60,6 +65,7 @@ fun DropDownMenu(
             onDismissRequest = { expanded = false },
             modifier = Modifier
                 .width(with(LocalDensity.current) { textfieldSize.width.toDp() })
+                .background(bgColor)
         ) {
             suggestions.forEach { label ->
                 DropdownMenuItem(onClick = {

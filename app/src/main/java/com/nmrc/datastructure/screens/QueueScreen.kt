@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.nmrc.datastructure.components.Header
+import com.nmrc.datastructure.components.queue_screen.FormPatient
 import com.nmrc.datastructure.ui.theme.BlueVariant
 import com.nmrc.datastructure.ui.theme.Gray
 import com.nmrc.datastructure.viewmodel.MainViewModel
@@ -59,6 +60,9 @@ fun QueueScreen(
                     subtitle = "Pacientes"
                 )
 
+                FormPatient(enqueue = { firstName, lastName, age, gender, dni ->
+
+                })
 
             }
         }
@@ -85,10 +89,6 @@ fun QueueScreen(
                             .padding(0.dp)
                     )
                 }
-
-
-
-
 
 
 

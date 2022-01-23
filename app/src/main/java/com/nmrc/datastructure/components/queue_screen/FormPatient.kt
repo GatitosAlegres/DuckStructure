@@ -1,4 +1,4 @@
-package com.nmrc.datastructure.components.linkedlist_screen
+package com.nmrc.datastructure.components.queue_screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -19,18 +19,16 @@ import com.nmrc.datastructure.ui.theme.Green
 import com.nmrc.datastructure.ui.theme.Orange
 
 @Composable
-fun FormDoc(
-    addEnd: (String, String, Int, Char, Int, String) -> Unit,
-    addStart: (String, String, Int, Char, Int, String) -> Unit,
+fun FormPatient(
+    enqueue: (String, String, Int, Char, String) -> Unit,
     onEdit: Boolean = false,
-    edit: ((String, String, Int, Char, Int, String) -> Unit)? = null
+    edit: ((String, String, Int, Char, String) -> Unit)? = null
 ) {
     var firstName1 by remember { mutableStateOf("") }
     var lastName1 by remember { mutableStateOf("") }
-    var gender1 by remember { mutableStateOf('m') }
     var age1 by remember { mutableStateOf(0) }
-    var yearsOfService1 by remember { mutableStateOf(0) }
-    var specialty1 by remember { mutableStateOf("") }
+    var gender1 by remember { mutableStateOf('m') }
+    var dni by remember { mutableStateOf("") }
 
     OutlinedTextField(
         textStyle = TextStyle(color = MaterialTheme.colors.onBackground),
@@ -68,7 +66,7 @@ fun FormDoc(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number
             ),
-            list = (16..42).map { it.toString() },
+            list = (1..42).map { it.toString() },
             label = "Edad",
             select = {
                 age1 = if (it.isNotEmpty())
@@ -78,36 +76,19 @@ fun FormDoc(
             })
     }
 
-    Row() {
-        OutlinedTextField(
-            textStyle = TextStyle(color = MaterialTheme.colors.onBackground),
-            modifier = Modifier
-                .fillMaxWidth(0.3f),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number
-            ),
-            value = yearsOfService1.toString(),
-            onValueChange = {
-                yearsOfService1 = if (it.isNotEmpty())
-                    it.toInt()
-                else 0
-            }, label = {
-                Text(text = "Años de Servicio")
-            })
+    Spacer(modifier = Modifier.width(16.dp))
 
-        Spacer(modifier = Modifier.width(16.dp))
+    OutlinedTextField(
+        textStyle = TextStyle(color = MaterialTheme.colors.onBackground),
+        modifier = Modifier
+            .fillMaxWidth(0.6f),
+        value = dni,
+        onValueChange = {
+            dni = it
+        }, label = {
+            Text(text = "DNI")
+        })
 
-        OutlinedTextField(
-            textStyle = TextStyle(color = MaterialTheme.colors.onBackground),
-            modifier = Modifier
-                .fillMaxWidth(0.6f),
-            value = specialty1,
-            onValueChange = {
-                specialty1 = it
-            }, label = {
-                Text(text = "Especialidad")
-            })
-    }
 
     Spacer(modifier = Modifier.height(16.dp))
 
@@ -121,8 +102,7 @@ fun FormDoc(
             firstName1 = ""
             lastName1 = ""
             age1 = 0
-            yearsOfService1 = 0
-            specialty1 = ""
+            dni = ""
         }
     )
 
@@ -132,46 +112,24 @@ fun FormDoc(
         ActionIconBottom(
             icon = Icons.Outlined.Done,
             tint = Green,
-            content = "Agregar (Final)",
+            content = "Agregar a la Cola",
             onClick = {
-                addEnd(
+                enqueue(
                     firstName1,
                     lastName1,
                     age1,
                     gender1,
-                    yearsOfService1,
-                    specialty1
+                    dni
                 )
                 firstName1 = ""
                 lastName1 = ""
                 age1 = 0
-                yearsOfService1 = 0
-                specialty1 = ""
+                dni = ""
             }
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        ActionIconBottom(
-            icon = Icons.Outlined.Done,
-            tint = Green,
-            content = "Agregar (Inicio)",
-            onClick = {
-                addStart(
-                    firstName1,
-                    lastName1,
-                    age1,
-                    gender1,
-                    yearsOfService1,
-                    specialty1
-                )
-                firstName1 = ""
-                lastName1 = ""
-                age1 = 0
-                yearsOfService1 = 0
-                specialty1 = ""
-            }
-        )
     } else {
         ActionIconBottom(
             icon = Icons.Outlined.Done,
@@ -184,17 +142,15 @@ fun FormDoc(
                         lastName1,
                         age1,
                         gender1,
-                        yearsOfService1,
-                        specialty1
+                        dni
                     )
                 }
                 firstName1 = ""
                 lastName1 = ""
                 age1 = 0
-                yearsOfService1 = 0
-                specialty1 = ""
-
+                dni = ""
             }
         )
     }
+
 }
