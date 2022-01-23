@@ -21,6 +21,7 @@ import androidx.navigation.NavHostController
 import com.nmrc.core.linkedlist.LinkedList
 import com.nmrc.datastructure.components.*
 import com.nmrc.datastructure.components.linkedlist_screen.DataStream
+import com.nmrc.datastructure.components.linkedlist_screen.DoctorCard
 import com.nmrc.datastructure.components.linkedlist_screen.FormDoc
 import com.nmrc.datastructure.components.linkedlist_screen.SortDataStream
 import com.nmrc.datastructure.model.Doctor

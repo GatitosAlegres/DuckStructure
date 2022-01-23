@@ -3,6 +3,7 @@ package com.nmrc.datastructure.components.linkedlist_screen
 import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Done
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.nmrc.datastructure.components.ActionIconBottom
@@ -33,6 +35,7 @@ fun FormDoc(
     var specialty1 by remember { mutableStateOf("") }
 
     OutlinedTextField(
+        textStyle = TextStyle(color = MaterialTheme.colors.onBackground),
         value = firstName1,
         onValueChange = {
             firstName1 = it
@@ -41,6 +44,7 @@ fun FormDoc(
         })
 
     OutlinedTextField(
+        textStyle = TextStyle(color = MaterialTheme.colors.onBackground),
         value = lastName1,
         onValueChange = {
             lastName1 = it
@@ -78,6 +82,7 @@ fun FormDoc(
 
     Row() {
         OutlinedTextField(
+            textStyle = TextStyle(color = MaterialTheme.colors.onBackground),
             modifier = Modifier
                 .fillMaxWidth(0.3f),
             keyboardOptions = KeyboardOptions(
@@ -95,6 +100,7 @@ fun FormDoc(
         Spacer(modifier = Modifier.width(16.dp))
 
         OutlinedTextField(
+            textStyle = TextStyle(color = MaterialTheme.colors.onBackground),
             modifier = Modifier
                 .fillMaxWidth(0.6f),
             value = specialty1,
