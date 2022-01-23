@@ -120,7 +120,7 @@ fun LinkedListScreen(
                 .padding(16.dp)
         ) {
 
-            item() {
+            item {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -467,7 +467,7 @@ fun LinkedListScreen(
 
                 Header(
                     title = "Modificar Campos",
-                    subtitle = "Seleccione el caso de uso"
+                    subtitle = "Seleccione el doctor a modificar"
                 )
 
 
@@ -487,7 +487,25 @@ fun LinkedListScreen(
                     })
 
                 if (tempDoc.lastName.isNotEmpty()) {
-
+                    FormDoc(addEnd = { _, _, _, _, _, _ -> },
+                        addStart = { _, _, _, _, _, _ -> },
+                        onEdit = true,
+                        edit = { firstName, lastName, age, gender, yearsOfService, speciality ->
+                            viewModel.list.value.remove(tempDoc)
+                            viewModel.list.value.add(
+                                viewModel.list.value.indexOf(tempDoc),
+                                Doctor(
+                                    firstName,
+                                    lastName,
+                                    age,
+                                    gender,
+                                    yearsOfService,
+                                    speciality
+                                )
+                            )
+                            viewModel.hasBeenAdded()
+                            tempDoc.lastName=""
+                        })
                 }
 
                 Header(
