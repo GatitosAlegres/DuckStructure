@@ -25,7 +25,7 @@ fun Header(
     isDark: Boolean = isSystemInDarkTheme()) {
     Text(
         text = title,
-        modifier = modifier.padding(16.dp),
+        modifier = modifier.padding(start = 16.dp),
         style = TextStyle(
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold,
@@ -35,7 +35,7 @@ fun Header(
 
     Text(
         text = subtitle,
-        modifier = subtitleModifier.padding(16.dp),
+        modifier = subtitleModifier.padding(start = 16.dp, top = 8.dp),
         style = TextStyle(
             fontSize = 16.sp,
             color = if (isDark) Green else BlueVariant,

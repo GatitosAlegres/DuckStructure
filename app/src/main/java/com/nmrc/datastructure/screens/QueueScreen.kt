@@ -13,19 +13,21 @@ import androidx.compose.material.icons.rounded.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Alignment.Companion.End
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.nmrc.core.queue.Queue
 import com.nmrc.datastructure.components.ActionIconBottom
 import com.nmrc.datastructure.components.DropDownMenu
 import com.nmrc.datastructure.components.Header
+import com.nmrc.datastructure.components.linkedlist_screen.DoctorCard
 import com.nmrc.datastructure.components.queue_screen.FormPatient
 import com.nmrc.datastructure.components.queue_screen.PatientCard
 import com.nmrc.datastructure.components.queue_screen.PatientDataStream
+import com.nmrc.datastructure.components.queue_screen.PatientSortDataStream
 import com.nmrc.datastructure.model.Patient
 import com.nmrc.datastructure.ui.theme.*
 import com.nmrc.datastructure.util.toList
@@ -121,6 +123,7 @@ fun QueueScreen(
                     )
                 }
 
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Header(
                     title = "Contar",
@@ -162,13 +165,179 @@ fun QueueScreen(
                     subtitle = "Seleccione el caso de uso"
                 )
 
+                PatientDataStream(
+                    label = "Filtrar por",
+                    onAge = { restrict, age ->
 
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        if (restrict) {
+                            mainViewModel.list.value.filter {
+                                it.age <= age
+                            }.toList()
+                                .forEach { patient ->
+                                    PatientCard(
+                                        firstName = patient.firstName,
+                                        lastName = patient.lastName,
+                                        age = patient.age,
+                                        gender = patient.gender,
+                                        dni = patient.dni
+                                    )
+                                }
+                        } else {
+                            mainViewModel.list.value.filter {
+                                it.age >= age
+                            }.toList()
+                                .forEach { patient ->
+                                    PatientCard(
+                                        firstName = patient.firstName,
+                                        lastName = patient.lastName,
+                                        age = patient.age,
+                                        gender = patient.gender,
+                                        dni = patient.dni
+                                    )
+                                }
+                        }
+                    },
+                    onGender = { gender ->
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        mainViewModel.list.value.filter {
+                            it.gender == gender
+                        }.toList()
+                            .forEach { patient ->
+                                PatientCard(
+                                    firstName = patient.firstName,
+                                    lastName = patient.lastName,
+                                    age = patient.age,
+                                    gender = patient.gender,
+                                    dni = patient.dni
+                                )
+                            }
+                    }
+                )
+
+                Header(
+                    title = "Ordenar",
+                    subtitle = "Seleccione el caso de uso"
+                )
+
+                PatientSortDataStream(
+                    label = "Ordenar por",
+                    onLastName = { asc ->
+                        if (asc) {
+
+                            val copy = mainViewModel.list.value
+
+                            copy.sort { doc1, doc2 ->
+                                doc1.lastName.compareTo(doc2.lastName)
+                            }
+
+                            copy.toList().forEach { patient ->
+                                    PatientCard(
+                                        firstName = patient.firstName,
+                                        lastName = patient.lastName,
+                                        age = patient.age,
+                                        gender = patient.gender,
+                                        dni = patient.dni
+                                    )
+                            }
+                        } else {
+
+                            val copy = mainViewModel.list.value
+
+                            copy.sort { doc1, doc2 ->
+                                doc2.lastName.compareTo(doc1.lastName)
+                            }
+                            copy.toList().forEach { patient ->
+                                    PatientCard(
+                                        firstName = patient.firstName,
+                                        lastName = patient.lastName,
+                                        age = patient.age,
+                                        gender = patient.gender,
+                                        dni = patient.dni
+                                    )
+                            }
+                        }
+                    },
+                    onAge = { asc ->
+                        if (asc) {
+
+                            val copy = mainViewModel.list.value.map { it }
+
+                            copy.sort { doc1, doc2 ->
+                                doc1.age - doc2.age
+                            }
+
+                            copy.toList().forEach { patient ->
+                                PatientCard(
+                                    firstName = patient.firstName,
+                                    lastName = patient.lastName,
+                                    age = patient.age,
+                                    gender = patient.gender,
+                                    dni = patient.dni
+                                )
+                            }
+                        } else {
+
+                            val copy = mainViewModel.list.value.map { it }
+
+                            copy.sort { doc1, doc2 ->
+                                doc2.age - doc1.age
+                            }
+                            copy.toList().forEach { patient ->
+                                PatientCard(
+                                    firstName = patient.firstName,
+                                    lastName = patient.lastName,
+                                    age = patient.age,
+                                    gender = patient.gender,
+                                    dni = patient.dni
+                                )
+                            }
+                        }
+                    },
+                    onGender = { gender ->
+                        if (gender == 'm') {
+
+                            val copy = mainViewModel.list.value.map { it }
+
+                            copy.sort { doc1, doc2 ->
+                                doc2.gender.compareTo(doc1.gender)
+                            }
+
+                            copy.toList().forEach { patient ->
+                                PatientCard(
+                                    firstName = patient.firstName,
+                                    lastName = patient.lastName,
+                                    age = patient.age,
+                                    gender = patient.gender,
+                                    dni = patient.dni
+                                )
+                            }
+                        } else {
+
+                            val copy = mainViewModel.list.value.map { it }
+
+                            copy.sort { doc1, doc2 ->
+                                doc1.gender.compareTo(doc2.gender)
+                            }
+                            copy.toList().forEach { patient ->
+                                PatientCard(
+                                    firstName = patient.firstName,
+                                    lastName = patient.lastName,
+                                    age = patient.age,
+                                    gender = patient.gender,
+                                    dni = patient.dni
+                                )
+                            }
+                        }
+                    }
+                )
 
                 Header(
                     title = "Modificar Campos",
                     subtitle = "Seleccione el doctor a modificar"
                 )
-
 
                 DropDownMenu(
                     modifier = Modifier
@@ -207,41 +376,45 @@ fun QueueScreen(
 //                        })
 //                }
 
+                Spacer(modifier = Modifier.height(16.dp))
 
-                Header(
-                    title = "COLA DE PACIENTES",
-                    subtitle = ""
-                )
                 Text(
                     text = "Total : ${mainViewModel.count.value}",
                     color = Color.Transparent,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 16.dp),
+                        .fillMaxWidth(),
                     textAlign = TextAlign.End
                 )
 
-                ActionIconBottom(
-                    Modifier
-                        .fillMaxWidth()
-                        .align(CenterHorizontally),
-                    icon = Icons.Outlined.SkipNext,
-                    tint = if(isDark) Green else GreenDarkMaterial,
-                    content = "Desencolar") {
+                if(!mainViewModel.list.value.isEmpty) {
+                    Header(
+                        title = "COLA DE PACIENTES",
+                        subtitle = ""
+                    )
+                    ActionIconBottom(
+                        Modifier
+                            .fillMaxWidth()
+                            .align(CenterHorizontally),
+                        icon = Icons.Outlined.SkipNext,
+                        tint = if (isDark) Green else GreenDarkMaterial,
+                        content = "Desencolar"
+                    ) {
 
-                    mainViewModel.list.value.dequeue()
-                    mainViewModel.statusChange()
+                        mainViewModel.list.value.dequeue()
+                        mainViewModel.statusChange()
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    LinearProgressIndicator(
+                        progress = mainViewModel.list.value.length() / 100f,
+                        color = if (isDark) Green else GreenDarkMaterial,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(32.dp)
+                            .clip(CircleShape)
+                    )
                 }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                LinearProgressIndicator(
-                    progress = mainViewModel.list.value.length()/100f,
-                    color = if(isDark) Green else GreenDarkMaterial,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(32.dp)
-                        .clip(CircleShape))
 
                 mainViewModel.list.value.toList().forEach { patient ->
                     PatientCard(
@@ -254,9 +427,8 @@ fun QueueScreen(
                 }
             }
         }
-    },  scaffoldState = state,
+    }, scaffoldState = state,
         sheetShape = RoundedCornerShape(16.dp),
-        sheetBackgroundColor = color,
-        drawerBackgroundColor = Color.White
+        sheetBackgroundColor = color
     )
 }

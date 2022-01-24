@@ -8,7 +8,7 @@ public abstract class Structure<E> implements StructureEssentials<E> {
 
     protected int size;
 
-    protected abstract boolean isEmpty();
+    public abstract boolean isEmpty();
 
     protected abstract E top();
 }

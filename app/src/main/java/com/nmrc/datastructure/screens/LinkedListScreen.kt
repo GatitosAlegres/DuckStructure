@@ -133,11 +133,12 @@ fun LinkedListScreen(
                     )
                 }
 
+                Spacer(modifier = Modifier.height(16.dp))
+                
                 Header(
                     title = "Contar",
                     subtitle = "Seleccione el caso de uso"
                 )
-
 
                 DataStream(
                     label = "Contar por",
@@ -505,21 +506,20 @@ fun LinkedListScreen(
                         })
                 }
 
-                Header(
-                    title = "Reducir",
-                    subtitle = "Seleccione el caso de uso"
-                )
+                Spacer(modifier = Modifier.height(16.dp))
 
-                Header(
-                    title = "TOTAL DE DOCTORES",
-                    subtitle = ""
-                )
+                if(!viewModel.list.value.isEmpty) {
+                    Header(
+                        title = "TOTAL DE DOCTORES",
+                        subtitle = ""
+                    )
+                }
+
                 Text(
                     text = "Total : ${viewModel.count.value}",
                     color = Color.Transparent,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 16.dp),
+                        .fillMaxWidth(),
                     textAlign = TextAlign.End
                 )
 
@@ -537,7 +537,6 @@ fun LinkedListScreen(
         }
     }, scaffoldState = state,
         sheetShape = RoundedCornerShape(16.dp),
-        sheetBackgroundColor = color,
-        drawerBackgroundColor = Color.White
+        sheetBackgroundColor = color
     )
 }

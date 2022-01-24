@@ -178,7 +178,7 @@ public class LinkedList<E> extends Structure<E> {
     }
 
     @Override
-    protected boolean isEmpty() {
+    public boolean isEmpty() {
         return head == null;
     }
 
