@@ -51,6 +51,40 @@ public class Queue<E> extends Structure<E> {
         return size;
     }
 
+    public void insert(int index, E element) {
+        Node<E> node = new Node<>(element);
+        Node<E> temp = first;
+
+        if (index == 0 && size == 1) {
+            enqueue(element);
+            return;
+        }
+
+        for (int i = 0; i < index - 1; i++)
+            temp = temp.getNext();
+
+        node.setNext(temp.getNext());
+        temp.setNext(node);
+        size++;
+    }
+
+    public void remove(E element) {
+        Node<E> temp = first;
+        Node<E> prev = null;
+
+        while (temp != null) {
+            if (temp.getElement().equals(element)) {
+                if (prev != null) {
+                    prev.setNext(temp.getNext());
+                } else first = temp.getNext();
+                size--;
+                break;
+            }
+            prev = temp;
+            temp = temp.getNext();
+        }
+    }
+
     @Override
     public E top() {
         return first.getElement();

@@ -1,5 +1,6 @@
 package com.nmrc.datastructure.screens
 
+import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -232,13 +233,13 @@ fun QueueScreen(
                             }
 
                             copy.toList().forEach { patient ->
-                                    PatientCard(
-                                        firstName = patient.firstName,
-                                        lastName = patient.lastName,
-                                        age = patient.age,
-                                        gender = patient.gender,
-                                        dni = patient.dni
-                                    )
+                                PatientCard(
+                                    firstName = patient.firstName,
+                                    lastName = patient.lastName,
+                                    age = patient.age,
+                                    gender = patient.gender,
+                                    dni = patient.dni
+                                )
                             }
                         } else {
 
@@ -248,13 +249,13 @@ fun QueueScreen(
                                 doc2.lastName.compareTo(doc1.lastName)
                             }
                             copy.toList().forEach { patient ->
-                                    PatientCard(
-                                        firstName = patient.firstName,
-                                        lastName = patient.lastName,
-                                        age = patient.age,
-                                        gender = patient.gender,
-                                        dni = patient.dni
-                                    )
+                                PatientCard(
+                                    firstName = patient.firstName,
+                                    lastName = patient.lastName,
+                                    age = patient.age,
+                                    gender = patient.gender,
+                                    dni = patient.dni
+                                )
                             }
                         }
                     },
@@ -352,27 +353,26 @@ fun QueueScreen(
                         }
                     })
 
-//                if (tempPatient.lastName.isNotEmpty()) {
-//                    FormDoc(addEnd = { _, _, _, _, _, _ -> },
-//                        addStart = { _, _, _, _, _, _ -> },
-//                        onEdit = true,
-//                        edit = { firstName, lastName, age, gender, yearsOfService, speciality ->
-//                            mainViewModel.list.value.add(
-//                                mainViewModel.list.value.indexOf(tempDoc),
-//                                Doctor(
-//                                    firstName,
-//                                    lastName,
-//                                    age,
-//                                    gender,
-//                                    yearsOfService,
-//                                    speciality
-//                                )
-//                            )
-//                            mainViewModel.list.value.remove(tempDoc)
-//                            mainViewModel.hasBeenAdded()
-//                            tempPatient.lastName = ""
-//                        })
-//                }
+                if (tempPatient.lastName.isNotEmpty()) {
+                    FormPatient(
+                        enqueue = {_, _, _, _, _ ->},
+                        onEdit = true,
+                        edit = { firstName, lastName, age, gender,  dni ->
+                            mainViewModel.list.value.insert(
+                                mainViewModel.list.value.indexOf(tempPatient),
+                                Patient(
+                                    firstName,
+                                    lastName,
+                                    age,
+                                    gender,
+                                    dni
+                                )
+                            )
+                            mainViewModel.list.value.remove(tempPatient)
+                            mainViewModel.statusChange()
+                            tempPatient.lastName = ""
+                        })
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -384,7 +384,7 @@ fun QueueScreen(
                     textAlign = TextAlign.End
                 )
 
-                if(!mainViewModel.list.value.isEmpty) {
+                if (!mainViewModel.list.value.isEmpty) {
                     Header(
                         title = "COLA DE PACIENTES",
                         subtitle = ""
