@@ -1,6 +1,5 @@
 package com.nmrc.datastructure.screens
 
-import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -123,268 +122,259 @@ fun QueueScreen(
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-
-                Header(
-                    title = "Contar",
-                    subtitle = "Seleccione el caso de uso"
-                )
-
-                PatientDataStream(
-                    label = "Contar por",
-                    onAge = { restrict, age ->
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        ActionIconBottom(
-                            icon = Icons.Rounded.Person,
-                            tint = Orange,
-                            content =
-                            if (restrict) {
-                                mainViewModel.list.value.count { it.age <= age }.toString()
-                            } else {
-                                mainViewModel.list.value.count { it.age >= age }.toString()
-                            }
-                        ) {}
-                    },
-                    onGender = { gender ->
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        ActionIconBottom(
-                            icon = Icons.Rounded.Person,
-                            tint = Orange,
-                            content =
-                            mainViewModel.list.value.count { it.gender == gender }
-                                .toString()
-                        ) {}
-                    }
-                )
-
-                Header(
-                    title = "Filtrar",
-                    subtitle = "Seleccione el caso de uso"
-                )
-
-                PatientDataStream(
-                    label = "Filtrar por",
-                    onAge = { restrict, age ->
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        if (restrict) {
-                            mainViewModel.list.value.filter {
-                                it.age <= age
-                            }.toList()
-                                .forEach { patient ->
-                                    PatientCard(
-                                        firstName = patient.firstName,
-                                        lastName = patient.lastName,
-                                        age = patient.age,
-                                        gender = patient.gender,
-                                        dni = patient.dni
-                                    )
-                                }
-                        } else {
-                            mainViewModel.list.value.filter {
-                                it.age >= age
-                            }.toList()
-                                .forEach { patient ->
-                                    PatientCard(
-                                        firstName = patient.firstName,
-                                        lastName = patient.lastName,
-                                        age = patient.age,
-                                        gender = patient.gender,
-                                        dni = patient.dni
-                                    )
-                                }
-                        }
-                    },
-                    onGender = { gender ->
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        mainViewModel.list.value.filter {
-                            it.gender == gender
-                        }.toList()
-                            .forEach { patient ->
-                                PatientCard(
-                                    firstName = patient.firstName,
-                                    lastName = patient.lastName,
-                                    age = patient.age,
-                                    gender = patient.gender,
-                                    dni = patient.dni
-                                )
-                            }
-                    }
-                )
-
-                Header(
-                    title = "Ordenar",
-                    subtitle = "Seleccione el caso de uso"
-                )
-
-                PatientSortDataStream(
-                    label = "Ordenar por",
-                    onLastName = { asc ->
-                        if (asc) {
-
-                            val copy = mainViewModel.list.value.map { it }
-
-                            copy.sort { doc1, doc2 ->
-                                doc1.lastName.compareTo(doc2.lastName)
-                            }
-
-                            copy.toList().forEach { patient ->
-                                PatientCard(
-                                    firstName = patient.firstName,
-                                    lastName = patient.lastName,
-                                    age = patient.age,
-                                    gender = patient.gender,
-                                    dni = patient.dni
-                                )
-                            }
-                        } else {
-
-                            val copy = mainViewModel.list.value.map { it }
-
-                            copy.sort { doc1, doc2 ->
-                                doc2.lastName.compareTo(doc1.lastName)
-                            }
-                            copy.toList().forEach { patient ->
-                                PatientCard(
-                                    firstName = patient.firstName,
-                                    lastName = patient.lastName,
-                                    age = patient.age,
-                                    gender = patient.gender,
-                                    dni = patient.dni
-                                )
-                            }
-                        }
-                    },
-                    onAge = { asc ->
-                        if (asc) {
-
-                            val copy = mainViewModel.list.value.map { it }
-
-                            copy.sort { doc1, doc2 ->
-                                doc1.age - doc2.age
-                            }
-
-                            copy.toList().forEach { patient ->
-                                PatientCard(
-                                    firstName = patient.firstName,
-                                    lastName = patient.lastName,
-                                    age = patient.age,
-                                    gender = patient.gender,
-                                    dni = patient.dni
-                                )
-                            }
-                        } else {
-
-                            val copy = mainViewModel.list.value.map { it }
-
-                            copy.sort { doc1, doc2 ->
-                                doc2.age - doc1.age
-                            }
-                            copy.toList().forEach { patient ->
-                                PatientCard(
-                                    firstName = patient.firstName,
-                                    lastName = patient.lastName,
-                                    age = patient.age,
-                                    gender = patient.gender,
-                                    dni = patient.dni
-                                )
-                            }
-                        }
-                    },
-                    onGender = { gender ->
-                        if (gender == 'm') {
-
-                            val copy = mainViewModel.list.value.map { it }
-
-                            copy.sort { doc1, doc2 ->
-                                doc2.gender.compareTo(doc1.gender)
-                            }
-
-                            copy.toList().forEach { patient ->
-                                PatientCard(
-                                    firstName = patient.firstName,
-                                    lastName = patient.lastName,
-                                    age = patient.age,
-                                    gender = patient.gender,
-                                    dni = patient.dni
-                                )
-                            }
-                        } else {
-
-                            val copy = mainViewModel.list.value.map { it }
-
-                            copy.sort { doc1, doc2 ->
-                                doc1.gender.compareTo(doc2.gender)
-                            }
-                            copy.toList().forEach { patient ->
-                                PatientCard(
-                                    firstName = patient.firstName,
-                                    lastName = patient.lastName,
-                                    age = patient.age,
-                                    gender = patient.gender,
-                                    dni = patient.dni
-                                )
-                            }
-                        }
-                    }
-                )
-
-                Header(
-                    title = "Modificar Campos",
-                    subtitle = "Seleccione el doctor a modificar"
-                )
-
-                DropDownMenu(
-                    modifier = Modifier
-                        .fillMaxWidth(0.5f)
-                        .height(64.dp),
-                    list = mainViewModel.list.value.toList().map { it.lastName },
-                    label = "Doctores",
-                    select = { lastName ->
-                        mainViewModel.list.value.forEach { patient ->
-                            if (patient.lastName.equals(lastName)) {
-                                tempPatient = patient
-                                return@forEach
-                            }
-                        }
-                    })
-
-                if (tempPatient.lastName.isNotEmpty()) {
-                    FormPatient(
-                        enqueue = {_, _, _, _, _ ->},
-                        onEdit = true,
-                        edit = { firstName, lastName, age, gender,  dni ->
-                            mainViewModel.list.value.insert(
-                                mainViewModel.list.value.indexOf(tempPatient),
-                                Patient(
-                                    firstName,
-                                    lastName,
-                                    age,
-                                    gender,
-                                    dni
-                                )
-                            )
-                            mainViewModel.list.value.remove(tempPatient)
-                            mainViewModel.statusChange()
-                            tempPatient.lastName = ""
-                        })
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = "Total : ${mainViewModel.count.value}",
-                    color = Color.Transparent,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.End
-                )
-
                 if (!mainViewModel.list.value.isEmpty) {
+                    Header(
+                        title = "Contar",
+                        subtitle = "Seleccione el caso de uso"
+                    )
+
+                    PatientDataStream(
+                        label = "Contar por",
+                        onAge = { restrict, age ->
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            ActionIconBottom(
+                                icon = Icons.Rounded.Person,
+                                tint = Orange,
+                                content =
+                                if (restrict) {
+                                    mainViewModel.list.value.count { it.age <= age }.toString()
+                                } else {
+                                    mainViewModel.list.value.count { it.age >= age }.toString()
+                                }
+                            ) {}
+                        },
+                        onGender = { gender ->
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            ActionIconBottom(
+                                icon = Icons.Rounded.Person,
+                                tint = Orange,
+                                content =
+                                mainViewModel.list.value.count { it.gender == gender }
+                                    .toString()
+                            ) {}
+                        }
+                    )
+
+                    Header(
+                        title = "Filtrar",
+                        subtitle = "Seleccione el caso de uso"
+                    )
+
+                    PatientDataStream(
+                        label = "Filtrar por",
+                        onAge = { restrict, age ->
+
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            if (restrict) {
+                                mainViewModel.list.value.filter {
+                                    it.age <= age
+                                }.toList()
+                                    .forEach { patient ->
+                                        PatientCard(
+                                            firstName = patient.firstName,
+                                            lastName = patient.lastName,
+                                            age = patient.age,
+                                            gender = patient.gender,
+                                            dni = patient.dni
+                                        )
+                                    }
+                            } else {
+                                mainViewModel.list.value.filter {
+                                    it.age >= age
+                                }.toList()
+                                    .forEach { patient ->
+                                        PatientCard(
+                                            firstName = patient.firstName,
+                                            lastName = patient.lastName,
+                                            age = patient.age,
+                                            gender = patient.gender,
+                                            dni = patient.dni
+                                        )
+                                    }
+                            }
+                        },
+                        onGender = { gender ->
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            mainViewModel.list.value.filter {
+                                it.gender == gender
+                            }.toList()
+                                .forEach { patient ->
+                                    PatientCard(
+                                        firstName = patient.firstName,
+                                        lastName = patient.lastName,
+                                        age = patient.age,
+                                        gender = patient.gender,
+                                        dni = patient.dni
+                                    )
+                                }
+                        }
+                    )
+
+                    Header(
+                        title = "Ordenar",
+                        subtitle = "Seleccione el caso de uso"
+                    )
+
+                    PatientSortDataStream(
+                        label = "Ordenar por",
+                        onLastName = { asc ->
+                            if (asc) {
+
+                                val copy = mainViewModel.list.value.map { it }
+
+                                copy.sort { doc1, doc2 ->
+                                    doc1.lastName.compareTo(doc2.lastName)
+                                }
+
+                                copy.toList().forEach { patient ->
+                                    PatientCard(
+                                        firstName = patient.firstName,
+                                        lastName = patient.lastName,
+                                        age = patient.age,
+                                        gender = patient.gender,
+                                        dni = patient.dni
+                                    )
+                                }
+                            } else {
+
+                                val copy = mainViewModel.list.value.map { it }
+
+                                copy.sort { doc1, doc2 ->
+                                    doc2.lastName.compareTo(doc1.lastName)
+                                }
+                                copy.toList().forEach { patient ->
+                                    PatientCard(
+                                        firstName = patient.firstName,
+                                        lastName = patient.lastName,
+                                        age = patient.age,
+                                        gender = patient.gender,
+                                        dni = patient.dni
+                                    )
+                                }
+                            }
+                        },
+                        onAge = { asc ->
+                            if (asc) {
+
+                                val copy = mainViewModel.list.value.map { it }
+
+                                copy.sort { doc1, doc2 ->
+                                    doc1.age - doc2.age
+                                }
+
+                                copy.toList().forEach { patient ->
+                                    PatientCard(
+                                        firstName = patient.firstName,
+                                        lastName = patient.lastName,
+                                        age = patient.age,
+                                        gender = patient.gender,
+                                        dni = patient.dni
+                                    )
+                                }
+                            } else {
+
+                                val copy = mainViewModel.list.value.map { it }
+
+                                copy.sort { doc1, doc2 ->
+                                    doc2.age - doc1.age
+                                }
+                                copy.toList().forEach { patient ->
+                                    PatientCard(
+                                        firstName = patient.firstName,
+                                        lastName = patient.lastName,
+                                        age = patient.age,
+                                        gender = patient.gender,
+                                        dni = patient.dni
+                                    )
+                                }
+                            }
+                        },
+                        onGender = { gender ->
+                            if (gender == 'm') {
+
+                                val copy = mainViewModel.list.value.map { it }
+
+                                copy.sort { doc1, doc2 ->
+                                    doc2.gender.compareTo(doc1.gender)
+                                }
+
+                                copy.toList().forEach { patient ->
+                                    PatientCard(
+                                        firstName = patient.firstName,
+                                        lastName = patient.lastName,
+                                        age = patient.age,
+                                        gender = patient.gender,
+                                        dni = patient.dni
+                                    )
+                                }
+                            } else {
+
+                                val copy = mainViewModel.list.value.map { it }
+
+                                copy.sort { doc1, doc2 ->
+                                    doc1.gender.compareTo(doc2.gender)
+                                }
+                                copy.toList().forEach { patient ->
+                                    PatientCard(
+                                        firstName = patient.firstName,
+                                        lastName = patient.lastName,
+                                        age = patient.age,
+                                        gender = patient.gender,
+                                        dni = patient.dni
+                                    )
+                                }
+                            }
+                        }
+                    )
+
+                    Header(
+                        title = "Modificar Campos",
+                        subtitle = "Seleccione el doctor a modificar"
+                    )
+
+                    DropDownMenu(
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                            .height(64.dp),
+                        list = mainViewModel.list.value.toList().map { it.lastName },
+                        label = "Doctores",
+                        select = { lastName ->
+                            mainViewModel.list.value.forEach { patient ->
+                                if (patient.lastName.equals(lastName)) {
+                                    tempPatient = patient
+                                    return@forEach
+                                }
+                            }
+                        })
+
+                    if (tempPatient.lastName.isNotEmpty()) {
+                        FormPatient(
+                            enqueue = { _, _, _, _, _ -> },
+                            onEdit = true,
+                            edit = { firstName, lastName, age, gender, dni ->
+                                mainViewModel.list.value.insert(
+                                    mainViewModel.list.value.indexOf(tempPatient),
+                                    Patient(
+                                        firstName,
+                                        lastName,
+                                        age,
+                                        gender,
+                                        dni
+                                    )
+                                )
+                                mainViewModel.list.value.remove(tempPatient)
+                                mainViewModel.statusChange()
+                                tempPatient.lastName = ""
+                            })
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
                     Header(
                         title = "COLA DE PACIENTES",
                         subtitle = ""
@@ -412,8 +402,18 @@ fun QueueScreen(
                             .height(32.dp)
                             .clip(CircleShape)
                     )
+                }else {
+                    Header(
+                        title = "",
+                        subtitle = "Pruebe agregando un nuevo Paciente")
                 }
-
+                Text(
+                    text = "Total : ${mainViewModel.count.value}",
+                    color = Color.Transparent,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.End
+                )
                 mainViewModel.list.value.toList().forEach { patient ->
                     PatientCard(
                         firstName = patient.firstName,
