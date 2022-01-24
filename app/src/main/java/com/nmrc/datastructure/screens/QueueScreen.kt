@@ -19,11 +19,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.nmrc.core.queue.Queue
 import com.nmrc.datastructure.components.ActionIconBottom
 import com.nmrc.datastructure.components.DropDownMenu
 import com.nmrc.datastructure.components.Header
-import com.nmrc.datastructure.components.linkedlist_screen.DoctorCard
 import com.nmrc.datastructure.components.queue_screen.FormPatient
 import com.nmrc.datastructure.components.queue_screen.PatientCard
 import com.nmrc.datastructure.components.queue_screen.PatientDataStream
@@ -227,7 +225,7 @@ fun QueueScreen(
                     onLastName = { asc ->
                         if (asc) {
 
-                            val copy = mainViewModel.list.value
+                            val copy = mainViewModel.list.value.map { it }
 
                             copy.sort { doc1, doc2 ->
                                 doc1.lastName.compareTo(doc2.lastName)
@@ -244,7 +242,7 @@ fun QueueScreen(
                             }
                         } else {
 
-                            val copy = mainViewModel.list.value
+                            val copy = mainViewModel.list.value.map { it }
 
                             copy.sort { doc1, doc2 ->
                                 doc2.lastName.compareTo(doc1.lastName)
