@@ -22,7 +22,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             val mainViewModel: MainViewModel = viewModel()
             DataStructureTheme {
-
                 Navigation(mainViewModel)
             }
 

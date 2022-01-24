@@ -342,7 +342,7 @@ fun QueueScreen(
                             .fillMaxWidth(0.5f)
                             .height(64.dp),
                         list = mainViewModel.list.value.toList().map { it.lastName },
-                        label = "Doctores",
+                        label = "Pacientes",
                         select = { lastName ->
                             mainViewModel.list.value.forEach { patient ->
                                 if (patient.lastName.equals(lastName)) {

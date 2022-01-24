@@ -1,28 +1,26 @@
 package com.nmrc.datastructure.model;
 
-import com.nmrc.core.linkedlist.LinkedList;
-
-import java.time.LocalDateTime;
+import java.util.List;
 
 public class AppointmentDetail {
 
-    private LocalDateTime date;
+    private String date;
     private String reason;
-    private LinkedList<String> symptom;
+    private List<String> symptom;
 
-    public AppointmentDetail(LocalDateTime date,
+    public AppointmentDetail(String date,
                              String reason,
-                             LinkedList<String> symptom) {
+                             List<String> symptom) {
         this.date = date;
         this.reason = reason;
         this.symptom = symptom;
     }
 
-    public LocalDateTime getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -34,11 +32,11 @@ public class AppointmentDetail {
         this.reason = reason;
     }
 
-    public LinkedList<String> getSymptom() {
+    public List<String> getSymptom() {
         return symptom;
     }
 
-    public void setSymptom(LinkedList<String> symptom) {
+    public void setSymptom(List<String> symptom) {
         this.symptom = symptom;
     }
 
