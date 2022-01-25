@@ -3,12 +3,14 @@ package com.nmrc.datastructure.navigation
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.nmrc.datastructure.screens.*
 import com.nmrc.datastructure.viewmodel.MainViewModel
 
+@ExperimentalUnitApi
 @ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @Composable

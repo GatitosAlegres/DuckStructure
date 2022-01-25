@@ -3,10 +3,10 @@ package com.nmrc.datastructure.model;
 public class Medicine {
 
     private String name;
-    private double priceU;
+    private float priceU;
 
     public Medicine(String name,
-                    double priceU) {
+                    float priceU) {
         this.name = name;
         this.priceU = priceU;
     }
@@ -23,7 +23,7 @@ public class Medicine {
         return priceU;
     }
 
-    public void setPriceU(double priceU) {
+    public void setPriceU(float priceU) {
         this.priceU = priceU;
     }
 

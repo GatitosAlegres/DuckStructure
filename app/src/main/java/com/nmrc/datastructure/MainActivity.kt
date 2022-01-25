@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nmrc.datastructure.navigation.Navigation
 import com.nmrc.datastructure.ui.theme.DataStructureTheme
@@ -12,6 +13,7 @@ import com.nmrc.datastructure.viewmodel.MainViewModel
 
 class MainActivity : ComponentActivity() {
 
+    @ExperimentalUnitApi
     @ExperimentalMaterialApi
     @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {

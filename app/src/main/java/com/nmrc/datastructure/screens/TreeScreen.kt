@@ -1,30 +1,34 @@
 package com.nmrc.datastructure.screens
 
+
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nmrc.datastructure.components.Header
 import com.nmrc.datastructure.components.tree_screen.FormTree
+import com.nmrc.datastructure.components.tree_screen.domain.BinaryNodeTree
+import com.nmrc.datastructure.components.tree_screen.domain.BinaryTree
+import com.nmrc.datastructure.components.tree_screen.domain.BinaryTreeBalanceType
+import com.nmrc.datastructure.components.tree_screen.domain.ComposableTreeStyle
+import com.nmrc.datastructure.components.tree_screen.ui.CoreBTUi
+import com.nmrc.datastructure.model.Medicine
 import com.nmrc.datastructure.model.Patient
-import com.nmrc.datastructure.ui.theme.BlueVariant
 import com.nmrc.datastructure.ui.theme.BlueVariantAlt
 import com.nmrc.datastructure.ui.theme.Gray
-import com.nmrc.datastructure.viewmodel.LListViewModel
 import com.nmrc.datastructure.viewmodel.TreeViewModel
 
+@ExperimentalUnitApi
 @ExperimentalMaterialApi
 @Composable
 fun TreeScreen(
@@ -47,6 +51,34 @@ fun TreeScreen(
             )
         )
     }
+
+
+    // Define the tree as a mutable BinaryNodeTree object
+    var tree: BinaryTree by remember { mutableStateOf(BinaryNodeTree()) }
+
+
+    // Define mutable variables which impact selection and style
+    var balanceType by remember {
+        mutableStateOf(BinaryTreeBalanceType.UNBALANCED)
+    }
+    var treeStyle by remember {
+        mutableStateOf(ComposableTreeStyle())
+    }
+    var selectedIndex by remember {
+        mutableStateOf(-1)
+    }
+    // NOT IDEAL... FIGURE OUT WHY NOT RECOMPOSING!
+    var drawPicture by remember {
+        mutableStateOf(false)
+    }
+
+    // Passed into composable which draws the tree
+    var nodeComposableDataList by remember {
+        mutableStateOf(tree.returnComposableData())
+    }
+
+    val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
 
     BottomSheetScaffold(modifier = Modifier.fillMaxSize(), content = {
         LazyColumn(
@@ -77,48 +109,22 @@ fun TreeScreen(
                 )
 
                 FormTree(add = { medicine, priceU ->
-
+                    viewModel.binaryTree.value.add(
+                        Medicine(
+                            medicine,
+                            priceU
+                        )
+                    )
                 })
+
+
+
             }
         }
 
     }, sheetContent = {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            item {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Divider(
-                        modifier = Modifier
-                            .fillMaxWidth(0.5f)
-                            .width(8.dp)
-                            .height(8.dp)
-                            .clip(CircleShape)
-                            .padding(0.dp)
-                    )
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-            }
-        }
-    },  scaffoldState = state,
+        CoreBTUi()
+    }, scaffoldState = state,
         sheetShape = RoundedCornerShape(16.dp),
         sheetBackgroundColor = color,
         drawerBackgroundColor = Color.White

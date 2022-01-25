@@ -1,5 +1,7 @@
 package com.nmrc.datastructure.screens
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -19,6 +21,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -132,7 +135,7 @@ fun MainScreen(
                                 }
 
                                 Divider(modifier = Modifier.padding(16.dp))
-
+                                var context = LocalContext.current
                                 CardX(
                                     title = "Arboles Binarios",
                                     painter = painterResource(id = R.drawable.binarytree),

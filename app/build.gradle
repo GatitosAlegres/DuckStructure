@@ -63,6 +63,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
     implementation 'androidx.compose.runtime:runtime-livedata:1.2.0-alpha01'
+    implementation "com.google.accompanist:accompanist-flowlayout:0.20.3"
     implementation(project(':core'))
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
