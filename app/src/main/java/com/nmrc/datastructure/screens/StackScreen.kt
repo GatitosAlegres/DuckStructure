@@ -39,7 +39,7 @@ fun StackScreen(
 ) {
 
     val state = rememberBottomSheetScaffoldState()
-    val color = if (isDark) BlueVariant else GrayLight
+    val color = if (isDark) BlueVariantAlt else GrayLight
 
     var tempPatient by remember {
         mutableStateOf(

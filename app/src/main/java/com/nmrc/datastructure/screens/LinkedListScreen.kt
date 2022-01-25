@@ -37,7 +37,7 @@ fun LinkedListScreen(
 ) {
 
     val state = rememberBottomSheetScaffoldState()
-    val color = if (isDark) BlueVariant else Gray
+    val color = if (isDark) BlueVariantAlt else Gray
 
     var tempDoc by remember {
         mutableStateOf(

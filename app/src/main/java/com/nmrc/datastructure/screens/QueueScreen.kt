@@ -40,7 +40,7 @@ fun QueueScreen(
 ) {
 
     val state = rememberBottomSheetScaffoldState()
-    val color = if (isDark) BlueVariant else Gray
+    val color = if (isDark) BlueVariantAlt else Gray
 
     var tempPatient by remember {
         mutableStateOf(

@@ -35,7 +35,7 @@ fun AppointmentCard(
     val patient = appointment.patient
     val detail = appointment.detail
 
-    val bgColor = if (isDark) BlueVariantAlt else Gray
+    val bgColor = if (isDark) BlueVariantDark else Gray
     val color = if(isDark) White else Dark
 
     Card(

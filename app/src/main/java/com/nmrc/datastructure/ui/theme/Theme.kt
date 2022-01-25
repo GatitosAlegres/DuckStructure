@@ -11,7 +11,7 @@ private val DarkColorPalette = darkColors(
     primary = Blue,
     primaryVariant = Blue,
     secondary = Teal200,
-    background = Dark,
+    background = BlueVariantAltBg,
     onBackground = White
 )
 
@@ -20,7 +20,7 @@ private val LightColorPalette = lightColors(
     primaryVariant = Gray,
     secondary = Teal200,
     background = White,
-    onBackground = Dark
+    onBackground = BlueVariantAltBg
 
 )
 

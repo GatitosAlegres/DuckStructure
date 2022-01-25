@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.nmrc.datastructure.ui.theme.Aqua
 import com.nmrc.datastructure.ui.theme.BlueDarkMaterial
+import com.nmrc.datastructure.ui.theme.BlueVariantDark
 import com.nmrc.datastructure.ui.theme.WhiteMaterial
 
 @Composable
@@ -21,7 +22,7 @@ fun CardDetail(
     isDark: Boolean = isSystemInDarkTheme()
 ) {
 
-    val color = if (isDark) Aqua else WhiteMaterial
+    val color = if (isDark) BlueVariantDark else WhiteMaterial
 
     Column(modifier = Modifier
         .background(color)

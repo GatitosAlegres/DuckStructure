@@ -18,6 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nmrc.datastructure.components.Header
 import com.nmrc.datastructure.ui.theme.BlueVariant
+import com.nmrc.datastructure.ui.theme.BlueVariantAlt
 import com.nmrc.datastructure.ui.theme.Gray
 import com.nmrc.datastructure.viewmodel.LListViewModel
 import com.nmrc.datastructure.viewmodel.TreeViewModel
@@ -31,7 +32,7 @@ fun TreeScreen(
 ) {
 
     val state = rememberBottomSheetScaffoldState()
-    val color = if (isDark) BlueVariant else Gray
+    val color = if (isDark) BlueVariantAlt else Gray
 
     BottomSheetScaffold(modifier = Modifier.fillMaxSize(), content = {
         LazyColumn(
