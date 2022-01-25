@@ -8,18 +8,28 @@ import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Headset
+import androidx.compose.material.icons.filled.Masks
+import androidx.compose.material.icons.filled.Sick
+import androidx.compose.material.icons.outlined.ConfirmationNumber
+import androidx.compose.material.icons.outlined.Female
+import androidx.compose.material.icons.outlined.Male
+import androidx.compose.material.icons.outlined.Pin
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nmrc.datastructure.ui.theme.Dark
-import com.nmrc.datastructure.ui.theme.Gray
+import com.nmrc.datastructure.components.ActionIconBottom
+import com.nmrc.datastructure.ui.theme.*
 
 @Composable
 fun DoctorCard(
@@ -32,79 +42,85 @@ fun DoctorCard(
     isDark: Boolean = isSystemInDarkTheme()
 ) {
 
-    val bgColor = if (isDark) Dark else Gray
+    val bgColor = if (isDark) BlueVariantDark else Gray
+    val color = if(isDark) White else Dark
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
         shape = RoundedCornerShape(16.dp),
-        backgroundColor = Color.Transparent,
+        backgroundColor = bgColor,
         elevation = 0.dp
     ) {
-        Column {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start,
-                modifier = Modifier
-                    .padding(8.dp)
+                verticalAlignment = Alignment.CenterVertically
             ) {
-
-                Column(Modifier.fillMaxWidth(0.25f)) {
+                Column(Modifier.fillMaxWidth(0.1f)) {
                     Text(
                         text = lastName[0].uppercase(),
                         style = TextStyle(
-                            color = MaterialTheme.colors.onBackground,
-                            fontWeight = FontWeight.Bold,
                             fontSize = 32.sp,
-                        ),
-                        modifier = Modifier
-                            .align(CenterHorizontally)
+                            color = color)
                     )
                 }
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Column(Modifier.fillMaxWidth(0.75f)) {
-                    Text(
-                        text = firstName,
-                        style = TextStyle(
-                            color = MaterialTheme.colors.onBackground,
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
+                Column {
+                    Text(text = firstName, color = color)
                     Text(
                         text = lastName,
                         style = TextStyle(
-                            color = MaterialTheme.colors.onBackground,
+                            fontSize = 11.sp,
+                            color = color
+                        )
+                    )
+                }
+
+            }
+            Row(Modifier.fillMaxWidth(), Arrangement.End) {
+                ActionIconBottom(
+                    icon = if(gender=='m') Icons.Outlined.Male else Icons.Outlined.Female,
+                    tint = if (gender=='m') Orange else Pink,
+                    content = if(gender=='m') "Masculino" else "Femenino",
+                    onClick = {})
+
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Column(Modifier.fillMaxWidth(0.5f)) {
+                    Text(
+                        text = "Datos Personales",
+                        style = TextStyle(
+                            textAlign = TextAlign.Center,
+                            color = if (isDark) Yellow else GreenDarkMaterial,
                             fontWeight = FontWeight.Bold
                         )
                     )
-                    Row {
-                        Text(
-                            text = "Edad: $age",
-                            style = TextStyle(
-                                color = MaterialTheme.colors.onBackground
-                            )
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = if (gender == 'm') "Sexo: M" else "Sexo: F",
-                            color = MaterialTheme.colors.onBackground
-                        )
-                    }
-                    Text(
-                        text = "Años de servicio: $yearsOfService",
-                        color = MaterialTheme.colors.onBackground
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Especialidad: $specialty",
-                        color = MaterialTheme.colors.onBackground
-                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(text = "Edad: $age", color = color)
+                    Text(text = "Especialidad: $specialty", color = color)
+                }
+                Column() {
+                    ActionIconBottom(
+                        icon = Icons.Outlined.Pin,
+                        tint = if (isDark) Orange else YellowDark,
+                        content = "Años de servicio:  $yearsOfService",
+                        onClick = {})
                 }
             }
-            Divider(modifier = Modifier.padding(8.dp))
         }
     }
 }
@@ -117,7 +133,7 @@ private fun Preview() {
             firstName = "George",
             lastName = "Peraldo Namoc",
             age = 20,
-            gender = 'm',
+            gender = 'f',
             yearsOfService = 2,
             specialty = "Dormir"
         )
@@ -132,7 +148,7 @@ private fun PreviewDark() {
             firstName = "George",
             lastName = "Peraldo Namoc",
             age = 20,
-            gender = 'm',
+            gender = 'f',
             yearsOfService = 2,
             specialty = "Dormir"
         )
