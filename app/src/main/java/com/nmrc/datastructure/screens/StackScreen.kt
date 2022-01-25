@@ -25,10 +25,8 @@ import com.nmrc.datastructure.components.stack_screen.FormAppointmentD
 import com.nmrc.datastructure.model.Appointment
 import com.nmrc.datastructure.model.AppointmentDetail
 import com.nmrc.datastructure.model.Patient
-import com.nmrc.datastructure.ui.theme.BlueVariant
+import com.nmrc.datastructure.ui.theme.*
 import com.nmrc.datastructure.ui.theme.Gray
-import com.nmrc.datastructure.ui.theme.Green
-import com.nmrc.datastructure.ui.theme.GreenDarkMaterial
 import com.nmrc.datastructure.util.toList
 import com.nmrc.datastructure.viewmodel.MainViewModel
 
@@ -41,7 +39,7 @@ fun StackScreen(
 ) {
 
     val state = rememberBottomSheetScaffoldState()
-    val color = if (isDark) BlueVariant else Gray
+    val color = if (isDark) BlueVariant else GrayLight
 
     var tempPatient by remember {
         mutableStateOf(

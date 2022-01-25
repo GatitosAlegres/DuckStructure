@@ -1,125 +1,173 @@
 package com.nmrc.datastructure.components.stack_screen
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Headset
+import androidx.compose.material.icons.filled.Masks
+import androidx.compose.material.icons.filled.Sick
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nmrc.datastructure.components.Header
+import com.nmrc.datastructure.components.ActionIconBottom
 import com.nmrc.datastructure.model.Appointment
+import com.nmrc.datastructure.model.AppointmentDetail
+import com.nmrc.datastructure.model.Patient
+import com.nmrc.datastructure.ui.theme.*
 
 
 @Composable
 fun AppointmentCard(
-    appointment: Appointment
+    appointment: Appointment,
+    isDark: Boolean = isSystemInDarkTheme()
 ) {
 
     val patient = appointment.patient
     val detail = appointment.detail
+
+    val bgColor = if (isDark) BlueVariantAlt else Gray
+    val color = if(isDark) White else Dark
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
         shape = RoundedCornerShape(16.dp),
-        backgroundColor = Color.Transparent,
+        backgroundColor = bgColor,
         elevation = 0.dp
     ) {
-        Column {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start,
-                modifier = Modifier
-                    .padding(8.dp)
+                verticalAlignment = Alignment.CenterVertically
             ) {
-
-                Column(Modifier.fillMaxWidth(0.25f)) {
+                Column(Modifier.fillMaxWidth(0.1f)) {
                     Text(
                         text = patient.lastName[0].uppercase(),
                         style = TextStyle(
-                            color = MaterialTheme.colors.onBackground,
-                            fontWeight = FontWeight.Bold,
                             fontSize = 32.sp,
-                        ),
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
+                            color = color)
                     )
                 }
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Column(Modifier.fillMaxWidth(0.75f)) {
-                    Text(
-                        text = patient.firstName,
-                        style = TextStyle(
-                            color = MaterialTheme.colors.onBackground,
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
+                Column {
+                    Text(text = patient.firstName, color = color)
                     Text(
                         text = patient.lastName,
                         style = TextStyle(
-                            color = MaterialTheme.colors.onBackground,
+                            fontSize = 11.sp,
+                            color = color
+                        )
+                    )
+                }
+
+            }
+            Row(Modifier.fillMaxWidth(), Arrangement.End) {
+                detail.symptom.forEach {
+                    ActionIconBottom(
+                        icon = when (it) {
+                            "fiebre" -> Icons.Default.Sick
+                            "dcabeza" -> Icons.Default.Headset
+                            "tos" -> Icons.Default.Masks
+                            else -> Icons.Default.Sick
+                        },
+                        tint = if (isDark) Orange else YellowDark,
+                        content = it,
+                        onClick = {})
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
+
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Column(Modifier.fillMaxWidth(0.3f)) {
+                    Text(
+                        text = "Datos Personales",
+                        style = TextStyle(
+                            textAlign = TextAlign.Center,
+                            color = if (isDark) Yellow else GreenDarkMaterial,
                             fontWeight = FontWeight.Bold
                         )
                     )
-                    Row {
-                        Text(
-                            text = "Edad: ${patient.age}",
-                            style = TextStyle(
-                                color = MaterialTheme.colors.onBackground
-                            )
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = if (patient.gender == 'm') "Sexo: M" else "Sexo: F",
-                            color = MaterialTheme.colors.onBackground
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(text = "Edad: ${patient.age}", color = color)
+                    Text(text = "Sexo: ${patient.gender.uppercase()}", color = color)
+                    Text(text = "DNI: ${patient.dni}", color = color)
+                }
+
+                Column(Modifier.fillMaxWidth(0.5f)) {
                     Text(
-                        text = "Dni: ${patient.dni}",
-                        color = MaterialTheme.colors.onBackground
+                        text = "Detalles de la Reserva",
+                        style = TextStyle(
+                            textAlign = TextAlign.Center,
+                            color = if (isDark) Yellow else GreenDarkMaterial,
+                        ),
+                        fontWeight = FontWeight.Bold
                     )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = "Fecha: ${detail.date}", color = color)
+                    Text(text = "Razon: ${detail.reason}", color = color)
                 }
             }
-
-            Divider(modifier = Modifier.padding(8.dp))
-
-            Header(title = "", subtitle = "Detalles")
-
-            Row {
-                Text(text = "Razon: ${detail.reason}",
-                    style = TextStyle(
-                        color = MaterialTheme.colors.onBackground
-                    ))
-                Text(text = "Fecha: ${detail.date}",
-                    style = TextStyle(
-                        color = MaterialTheme.colors.onBackground
-                    ))
-            }
-            
-            Text(text = "Sintomas",
-                style = TextStyle(
-                    color = MaterialTheme.colors.onBackground
-                ))
-
-            detail.symptom.forEach{
-                Text(text = it,
-                    style = TextStyle(
-                        color = MaterialTheme.colors.onBackground,
-                        fontSize = 16.sp
-                    ))
-            }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewAppointment() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        AppointmentCard(
+            Appointment(
+                Patient(
+                    "George",
+                    "Peraldo Namoc",
+                    20,
+                    'm',
+                    "70461710"
+                ),
+                AppointmentDetail("24/01/2022", "Mimir", listOf("fiebre", "tos"))
+            )
+        )
+    }
+}
+
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun PreviewDarkAppointment() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        AppointmentCard(
+            Appointment(
+                Patient(
+                    "Jhon Tercero",
+                    "Cerna Alvarado",
+                    23,
+                    'm',
+                    "00000000"
+                ),
+                AppointmentDetail("24/01/2022", "Sida", listOf("fiebre", "tos", "dcabeza"))
+            )
+        )
     }
 }
