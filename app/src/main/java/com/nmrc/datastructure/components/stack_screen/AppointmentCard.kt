@@ -1,6 +1,7 @@
 package com.nmrc.datastructure.components.stack_screen
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +14,7 @@ import androidx.compose.material.icons.filled.Sick
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,6 +46,7 @@ fun AppointmentCard(
             .padding(16.dp),
         shape = RoundedCornerShape(16.dp),
         backgroundColor = bgColor,
+        border = BorderStroke(1.dp, if (!isDark) GrayDark else Color.Transparent),
         elevation = 0.dp
     ) {
         Column(

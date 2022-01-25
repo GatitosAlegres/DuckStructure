@@ -1,5 +1,6 @@
 package com.nmrc.datastructure.components.queue_screen
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -7,16 +8,21 @@ import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Female
+import androidx.compose.material.icons.outlined.Male
+import androidx.compose.material.icons.outlined.Pin
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.nmrc.datastructure.ui.theme.Dark
-import com.nmrc.datastructure.ui.theme.Gray
+import com.nmrc.datastructure.components.ActionIconBottom
+import com.nmrc.datastructure.ui.theme.*
 
 @Composable
 fun PatientCard(
@@ -28,75 +34,79 @@ fun PatientCard(
     isDark: Boolean = isSystemInDarkTheme()
 ) {
 
-    val bgColor = if (isDark) Dark else Gray
+    val bgColor = if (isDark) BlueVariantDark else Gray
+    val color = if(isDark) White else Dark
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
         shape = RoundedCornerShape(16.dp),
-        backgroundColor = Color.Transparent,
+        border = BorderStroke(1.dp, if (!isDark) GrayDark else Color.Transparent),
+        backgroundColor = bgColor,
         elevation = 0.dp
     ) {
-        Column {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Start,
-                modifier = Modifier
-                    .padding(8.dp)
+                verticalAlignment = Alignment.CenterVertically
             ) {
-
-                Column(Modifier.fillMaxWidth(0.25f)) {
+                Column(Modifier.fillMaxWidth(0.1f)) {
                     Text(
                         text = lastName[0].uppercase(),
                         style = TextStyle(
-                            color = MaterialTheme.colors.onBackground,
-                            fontWeight = FontWeight.Bold,
                             fontSize = 32.sp,
-                        ),
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
+                            color = color)
                     )
                 }
-
-                Spacer(modifier = Modifier.width(16.dp))
-
-                Column(Modifier.fillMaxWidth(0.75f)) {
-                    Text(
-                        text = firstName,
-                        style = TextStyle(
-                            color = MaterialTheme.colors.onBackground,
-                            fontWeight = FontWeight.Bold
-                        )
-                    )
+                Column {
+                    Text(text = firstName, color = color)
                     Text(
                         text = lastName,
                         style = TextStyle(
-                            color = MaterialTheme.colors.onBackground,
+                            fontSize = 11.sp,
+                            color = color
+                        )
+                    )
+                }
+
+            }
+            Row(Modifier.fillMaxWidth(), Arrangement.End) {
+                ActionIconBottom(
+                    icon = if(gender=='m') Icons.Outlined.Male else Icons.Outlined.Female,
+                    tint = if (gender=='m') Orange else Pink,
+                    content = if(gender=='m') "Masculino" else "Femenino",
+                    onClick = {})
+
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+                Column(Modifier.fillMaxWidth(0.5f)) {
+                    Text(
+                        text = "Datos Personales",
+                        style = TextStyle(
+                            textAlign = TextAlign.Center,
+                            color = if (isDark) Yellow else GreenDarkMaterial,
                             fontWeight = FontWeight.Bold
                         )
                     )
-                    Row {
-                        Text(
-                            text = "Edad: $age",
-                            style = TextStyle(
-                                color = MaterialTheme.colors.onBackground
-                            )
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = if (gender == 'm') "Sexo: M" else "Sexo: F",
-                            color = MaterialTheme.colors.onBackground
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "Dni: $dni",
-                        color = MaterialTheme.colors.onBackground
-                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Text(text = "Edad: $age", color = color)
+                    Text(text = "DNI: $dni", color = color)
                 }
             }
-            Divider(modifier = Modifier.padding(8.dp))
         }
     }
 }

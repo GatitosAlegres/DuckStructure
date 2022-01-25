@@ -227,8 +227,8 @@ fun QueueScreen(
 
                                 val copy = mainViewModel.list.value.map { it }
 
-                                copy.sort { doc1, doc2 ->
-                                    doc1.lastName.compareTo(doc2.lastName)
+                                copy.sort { pat1, pat2 ->
+                                    pat1.lastName.compareTo(pat2.lastName)
                                 }
 
                                 copy.toList().forEach { patient ->
@@ -244,8 +244,8 @@ fun QueueScreen(
 
                                 val copy = mainViewModel.list.value.map { it }
 
-                                copy.sort { doc1, doc2 ->
-                                    doc2.lastName.compareTo(doc1.lastName)
+                                copy.sort { pat1, pat2 ->
+                                    pat2.lastName.compareTo(pat1.lastName)
                                 }
                                 copy.toList().forEach { patient ->
                                     PatientCard(
@@ -263,8 +263,8 @@ fun QueueScreen(
 
                                 val copy = mainViewModel.list.value.map { it }
 
-                                copy.sort { doc1, doc2 ->
-                                    doc1.age - doc2.age
+                                copy.sort { pat1, pat2 ->
+                                    pat1.age - pat2.age
                                 }
 
                                 copy.toList().forEach { patient ->
@@ -280,8 +280,8 @@ fun QueueScreen(
 
                                 val copy = mainViewModel.list.value.map { it }
 
-                                copy.sort { doc1, doc2 ->
-                                    doc2.age - doc1.age
+                                copy.sort { pat1, pat2 ->
+                                    pat2.age - pat1.age
                                 }
                                 copy.toList().forEach { patient ->
                                     PatientCard(
@@ -299,8 +299,8 @@ fun QueueScreen(
 
                                 val copy = mainViewModel.list.value.map { it }
 
-                                copy.sort { doc1, doc2 ->
-                                    doc2.gender.compareTo(doc1.gender)
+                                copy.sort { pat1, pat2 ->
+                                    pat2.gender.compareTo(pat1.gender)
                                 }
 
                                 copy.toList().forEach { patient ->
@@ -316,8 +316,8 @@ fun QueueScreen(
 
                                 val copy = mainViewModel.list.value.map { it }
 
-                                copy.sort { doc1, doc2 ->
-                                    doc1.gender.compareTo(doc2.gender)
+                                copy.sort { pat1, pat2 ->
+                                    pat1.gender.compareTo(pat2.gender)
                                 }
                                 copy.toList().forEach { patient ->
                                     PatientCard(
@@ -334,7 +334,7 @@ fun QueueScreen(
 
                     Header(
                         title = "Modificar Campos",
-                        subtitle = "Seleccione el doctor a modificar"
+                        subtitle = "Seleccione el paciente a modificar"
                     )
 
                     DropDownMenu(

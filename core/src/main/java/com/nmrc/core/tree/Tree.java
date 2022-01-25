@@ -103,4 +103,12 @@ public class Tree<E> {
             }
         }
     }
+
+    public Comparator<E> getComparator() {
+        return comparator;
+    }
+
+    public void setComparator(Comparator<E> comparator) {
+        this.comparator = comparator;
+    }
 }

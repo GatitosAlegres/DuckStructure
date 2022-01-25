@@ -8,7 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,6 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.nmrc.datastructure.components.Header
+import com.nmrc.datastructure.components.tree_screen.FormTree
+import com.nmrc.datastructure.model.Patient
 import com.nmrc.datastructure.ui.theme.BlueVariant
 import com.nmrc.datastructure.ui.theme.BlueVariantAlt
 import com.nmrc.datastructure.ui.theme.Gray
@@ -33,6 +35,18 @@ fun TreeScreen(
 
     val state = rememberBottomSheetScaffoldState()
     val color = if (isDark) BlueVariantAlt else Gray
+
+    var tempMedicine by remember {
+        mutableStateOf(
+            Patient(
+                "",
+                "",
+                0,
+                'm',
+                ""
+            )
+        )
+    }
 
     BottomSheetScaffold(modifier = Modifier.fillMaxSize(), content = {
         LazyColumn(
@@ -58,9 +72,13 @@ fun TreeScreen(
                 }
 
                 Header(
-                    title = "Arboles Binaros",
+                    title = "Arboles Binarios",
                     subtitle = "Medicamentos"
                 )
+
+                FormTree(add = { medicine, priceU ->
+
+                })
             }
         }
 
