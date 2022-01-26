@@ -4,16 +4,32 @@
 
 package com.nmrc.core.tree;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class Tree<E> {
 
     private NodeTree<E> root;
     private Comparator<E> comparator;
+    private List<E> enumerated;
 
     public Tree(Comparator<E> comparator) {
         root = null;
         this.comparator = comparator;
+        this.enumerated = new ArrayList<>();
+    }
+
+    public void setRoot(NodeTree<E> root) {
+        this.root = root;
+    }
+
+    public List<E> getEnumerated() {
+        return enumerated;
+    }
+
+    public void setEnumerated(List<E> enumerated) {
+        this.enumerated = enumerated;
     }
 
     public void add(E element) {
@@ -49,7 +65,7 @@ public class Tree<E> {
     public void inOrder(NodeTree<E> root) {
         if (root != null) {
             inOrder(root.getLeft());
-            System.out.println(root.getElement());
+            enumerated.add(root.getElement());
             inOrder(root.getRight());
         }
     }
@@ -60,7 +76,7 @@ public class Tree<E> {
 
     public void preOrder(NodeTree<E> root) {
         if (root != null) {
-            System.out.println(root.getElement());
+            enumerated.add(root.getElement());
             preOrder(root.getLeft());
             preOrder(root.getRight());
         }
@@ -70,7 +86,7 @@ public class Tree<E> {
         if (root != null) {
             postOrder(root.getLeft());
             postOrder(root.getRight());
-            System.out.println(root.getElement());
+            enumerated.add(root.getElement());
         }
     }
 
@@ -89,19 +105,39 @@ public class Tree<E> {
         if (aux != null) aux.setElement(element);
     }
 
-    public void delete(E element) {
-        NodeTree<E> aux = binarySearch(element);
-        if (aux != null) {
-            if (aux.getLeft() == null && aux.getRight() == null) root = null;
-            else if (aux.getLeft() == null) root = aux.getRight();
-            else if (aux.getRight() == null) root = aux.getLeft();
-            else {
-                NodeTree<E> aux2 = aux.getRight();
-                while (aux2.getLeft() != null) aux2 = aux2.getLeft();
-                aux.setElement(aux2.getElement());
-                aux.setRight(aux2.getRight());
-            }
+    public NodeTree<E> delete(NodeTree<E> root, E key)
+    {
+
+        if (root == null)
+            return root;
+
+        if (comparator.compare(key, root.getElement()) < 0)
+            root.setLeft(delete(root.getLeft(), key));
+        else if (comparator.compare(key, root.getElement()) > 0)
+            root.setRight(delete(root.getRight(), key));
+        else {
+            if (root.getLeft() == null)
+                return root.getRight();
+            else if (root.getRight() == null)
+                return root.getLeft();
+
+            root.setElement(minValue(root.getRight()));
+
+            root.setRight(delete(root.getRight(), root.getElement()));
         }
+
+        return root;
+    }
+
+    public E minValue(NodeTree<E> root)
+    {
+        E minv = root.getElement();
+        while (root.getLeft() != null)
+        {
+            minv = root.getLeft().getElement();
+            root = root.getLeft();
+        }
+        return minv;
     }
 
     public Comparator<E> getComparator() {

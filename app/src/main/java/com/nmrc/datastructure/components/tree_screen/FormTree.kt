@@ -51,9 +51,8 @@ fun FormTree(
         ),
         value = priceU.toString(),
         onValueChange = {
-            priceU = if (it.isNotEmpty())
-                it.toFloat()
-            else 0.0f
+            if (it.isNotEmpty())
+                priceU = it.toFloat()
         }, label = {
             Text(text = "Precio por Unidad")
         })

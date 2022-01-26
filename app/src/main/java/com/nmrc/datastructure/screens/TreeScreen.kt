@@ -1,15 +1,18 @@
 package com.nmrc.datastructure.screens
 
 
+import android.util.Log
 import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Preview
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -21,15 +24,15 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.nmrc.datastructure.components.ActionIconBottom
 import com.nmrc.datastructure.components.Header
 import com.nmrc.datastructure.components.tree_screen.FormTree
+import com.nmrc.datastructure.components.tree_screen.MedicineCard
 import com.nmrc.datastructure.components.tree_screen.domain.*
 import com.nmrc.datastructure.components.tree_screen.ui.*
 import com.nmrc.datastructure.model.Medicine
 import com.nmrc.datastructure.model.Patient
-import com.nmrc.datastructure.ui.theme.BlueVariantAlt
-import com.nmrc.datastructure.ui.theme.Gray
-import com.nmrc.datastructure.ui.theme.GrayLight
+import com.nmrc.datastructure.ui.theme.*
 import com.nmrc.datastructure.viewmodel.TreeViewModel
 
 @ExperimentalUnitApi
@@ -43,11 +46,10 @@ fun TreeScreen(
 
     val state = rememberBottomSheetScaffoldState()
     val color = if (isDark) BlueVariantAlt else Gray
+    var order by remember {
+        mutableStateOf(-1)
+    }
 
-//    var tree: BinaryTree = viewModel.tree.value
-
-
-    // Define mutable variables which impact selection and style
     var balanceType by remember {
         mutableStateOf(BinaryTreeBalanceType.UNBALANCED)
     }
@@ -57,16 +59,12 @@ fun TreeScreen(
     var selectedIndex by remember {
         mutableStateOf(-1f)
     }
-    // NOT IDEAL... FIGURE OUT WHY NOT RECOMPOSING!
+
     var drawPicture by remember {
         mutableStateOf(false)
     }
 
-    // Passed into composable which draws the tree
-//    var nodeComposableDataList = tree.returnComposableData()
-
     val scaffoldState = rememberScaffoldState()
-
 
     BottomSheetScaffold(modifier = Modifier.fillMaxSize(), content = {
         LazyColumn(
@@ -108,7 +106,35 @@ fun TreeScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                Row {
+                    ActionIconBottom(icon = Icons.Default.Preview, tint = Blue, content = "PreOrden") {
+                        order=0
+                        viewModel.binaryTree.value.preOrder(viewModel.binaryTree.value.root)
+                    }
 
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    ActionIconBottom(icon = Icons.Default.Preview, tint = Blue, content = "InOrden") {
+                        order=1
+                        viewModel.binaryTree.value.inOrder(viewModel.binaryTree.value.root)
+                    }
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    ActionIconBottom(icon = Icons.Default.Preview, tint = Blue, content = "PosOrden") {
+                        order=2
+                        viewModel.binaryTree.value.postOrder(viewModel.binaryTree.value.root)
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                if(order!=-1) {
+                    viewModel.binaryTree.value.enumerated.forEach{ medicine ->
+                        MedicineCard(medicine = medicine)
+                    }
+                    viewModel.binaryTree.value.enumerated.clear()
+                }
             }
         }
 
