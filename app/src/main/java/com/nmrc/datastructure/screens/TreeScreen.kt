@@ -147,19 +147,20 @@ fun TreeScreen(
 
                             val special =
                                 (balanceType == BinaryTreeBalanceType.AVL_TREE || balanceType == BinaryTreeBalanceType.MIN_HEAP)
-//                            tree = if (tree is BinaryNodeTree) BinaryNodeTree(special) else HeapTree(
-//                                special
-//                            )
+                            viewModel.setTree( if (viewModel.tree.value is BinaryNodeTree) BinaryNodeTree(special) else HeapTree(
+                                special
+                            ) as BinaryNodeTree)
                             val tmpTheme = treeStyle.theme
                             treeStyle = ComposableTreeStyle()
                             treeStyle.theme = tmpTheme
-                            viewModel.setData(viewModel.nodeComposableDataList.value)
+                            viewModel.setData(emptyList())
                         },
                         onRemove = {
 
                             viewModel.tree.value.remove(selectedIndex)
                             selectedIndex = -1f
                             viewModel.setData(viewModel.nodeComposableDataList.value)
+
                         }
                     )
                 }

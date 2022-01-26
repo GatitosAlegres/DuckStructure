@@ -20,6 +20,7 @@ class TreeViewModel : ViewModel() {
     private val _nodeComposableDataList: MutableState<List<NodeComposableData>> = mutableStateOf(tree.value.returnComposableData())
     val nodeComposableDataList: State<List<NodeComposableData>> = _nodeComposableDataList
 
+    val count = mutableStateOf(0)
 
     fun add(medicine: Medicine) {
         _binaryTree.value.add(medicine)
@@ -31,11 +32,11 @@ class TreeViewModel : ViewModel() {
         _tree.value = node
     }
 
-    fun setData(data: List<NodeComposableData>) {
-        _nodeComposableDataList.value = data
+    fun setData(data: List<NodeComposableData>?) {
+        _nodeComposableDataList.value = data as List<NodeComposableData>
     }
 
-    val count = mutableStateOf(0)
+
 
     fun statusChange() = count.value++
 
