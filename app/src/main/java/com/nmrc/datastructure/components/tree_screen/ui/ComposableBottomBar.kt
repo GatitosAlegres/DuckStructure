@@ -25,7 +25,7 @@ import com.nmrc.datastructure.ui.theme.roboto
 @ExperimentalUnitApi
 @Composable
 fun ComposableBottomBar(
-    selected: Int,
+    selected: Float,
     onReset: () -> Unit,
     onRemove: () -> Unit
 ) {
@@ -66,8 +66,8 @@ fun ComposableBottomBar(
 
                 Text(
                     text = when {
-                        maxWidth > 480.dp -> if (selected != -1) "$selected Selected" else "Tap to Select Node"
-                        else -> if (selected != -1) "$selected" else "Tap to Select"
+                        maxWidth > 480.dp -> if (selected != -1f) "$selected Selected" else "Tap to Select Node"
+                        else -> if (selected != -1f) "$selected" else "Tap to Select"
                     },
                     fontFamily = roboto,
                     textAlign = TextAlign.Center,
@@ -79,7 +79,7 @@ fun ComposableBottomBar(
                         .fillMaxHeight()
                         .padding(end = 10.dp)
                 )
-                if (selected != -1) {
+                if (selected != -1f) {
                     Text(
                         text = "Remove",
                         fontFamily = roboto,

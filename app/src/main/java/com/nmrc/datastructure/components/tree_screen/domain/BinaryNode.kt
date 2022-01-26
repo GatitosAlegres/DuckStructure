@@ -8,7 +8,7 @@ typealias ComposableNodeVisitor = (NodeComposableData) -> Unit
 typealias OffsetVisitor = (Offset, BinaryNode?, Offset?) -> Unit
 
 data class BinaryNode(
-    var value: Int
+    var value: Float
 ) {
     // CONSIDERING PUTTING THIS IN A DIFFERENT CLASS...
     var leftChild: BinaryNode? = null

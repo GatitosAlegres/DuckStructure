@@ -8,7 +8,7 @@ class BinaryNodeTree(var isAVL: Boolean = false) : BinaryTree() {
 
     override fun toString() = root?.toString() ?: "Empty"
 
-    override fun insert(value: Int) {
+    override fun insert(value: Float) {
         root = if (isAVL) {
             insertAVL(root, value)
         } else {
@@ -19,7 +19,7 @@ class BinaryNodeTree(var isAVL: Boolean = false) : BinaryTree() {
 
     private fun insertUnbalanced(
         node: BinaryNode?,
-        value: Int
+        value: Float
     ): BinaryNode {
         node ?: return BinaryNode(value)
         if (value < node.value) {
@@ -68,7 +68,7 @@ class BinaryNodeTree(var isAVL: Boolean = false) : BinaryTree() {
         // Move on to either next child or next level w/e first
     }
 
-    override fun contains(value: Int): Boolean {
+    override fun contains(value: Float): Boolean {
         root ?: return false
 
         var found = false
@@ -81,13 +81,13 @@ class BinaryNodeTree(var isAVL: Boolean = false) : BinaryTree() {
     }
 
 
-    override fun remove(value: Int) {
+    override fun remove(value: Float) {
         root = if (isAVL) removeAVL(root, value)
         else removeUnbalanced(root, value)
         size--
     }
 
-    private fun removeUnbalanced(node: BinaryNode?, value: Int): BinaryNode? {
+    private fun removeUnbalanced(node: BinaryNode?, value: Float): BinaryNode? {
         node ?: return null
 
         when {
@@ -113,7 +113,7 @@ class BinaryNodeTree(var isAVL: Boolean = false) : BinaryTree() {
         return node
     }
 
-    private fun removeAVL(node: BinaryNode?, value: Int): BinaryNode? {
+    private fun removeAVL(node: BinaryNode?, value: Float): BinaryNode? {
         node ?: return null
 
         when {
@@ -204,7 +204,7 @@ class BinaryNodeTree(var isAVL: Boolean = false) : BinaryTree() {
         return rightRotate(node)
     }
 
-    private fun insertAVL(node: BinaryNode?, value: Int): BinaryNode {
+    private fun insertAVL(node: BinaryNode?, value: Float): BinaryNode {
         node ?: return BinaryNode(value)
         if (value < node.value) {
             node.leftChild = insertAVL(node.leftChild, value)

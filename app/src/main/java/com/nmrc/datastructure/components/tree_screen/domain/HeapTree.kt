@@ -3,13 +3,13 @@ package com.nmrc.datastructure.components.tree_screen.domain
 
 class HeapTree(var isMin: Boolean = false) : BinaryTree() {
 
-    var elements: ArrayList<Int> = ArrayList()
+    var elements: ArrayList<Float> = ArrayList()
 
     override var size: Int = 0
         get() = elements.size
 
 
-    override fun insert(value: Int) {
+    override fun insert(value: Float) {
         elements.add(value) // 1
         siftUp(size - 1) // 2
         //
@@ -50,7 +50,7 @@ class HeapTree(var isMin: Boolean = false) : BinaryTree() {
         }
     }
 
-    override fun remove(value: Int) {
+    override fun remove(value: Float) {
         val index = indexAt(value)
         if (index >= size)
             return // 1
@@ -66,7 +66,7 @@ class HeapTree(var isMin: Boolean = false) : BinaryTree() {
         }
     }
 
-    fun indexAt(value: Int): Int {
+    fun indexAt(value: Float): Int {
         for ((index, element) in elements.withIndex()) {
             if (value == element)
                 return index
@@ -74,7 +74,7 @@ class HeapTree(var isMin: Boolean = false) : BinaryTree() {
         return -1
     }
 
-    override fun contains(value: Int): Boolean {
+    override fun contains(value: Float): Boolean {
         for (element in elements) {
             if (value == element)
                 return true
@@ -115,7 +115,7 @@ class HeapTree(var isMin: Boolean = false) : BinaryTree() {
     }
     private fun traverse(
         curr: Int,
-        visit: (Int) -> Unit
+        visit: (Float) -> Unit
     ) {
         if (curr > elements.lastIndex)
             return
@@ -170,7 +170,7 @@ class HeapTree(var isMin: Boolean = false) : BinaryTree() {
 
 
     // Accepts values
-    private fun compare(i: Int, j: Int): Int = if (isMin) j - i else i - j
+    private fun compare(i: Float, j: Float): Float = if (isMin) j - i else i - j
 
     private fun getMaxHeight(): Int {
         var height = 0

@@ -34,7 +34,7 @@ fun ComposableTree(
     modifier: Modifier = Modifier,
     drawPicture: Boolean = false,
     style: ComposableTreeStyle = ComposableTreeStyle(), // Dependency Injection
-    onNodeSelect: (Int?) -> Unit, // When a node is selected, return String to caller
+    onNodeSelect: (Float?) -> Unit, // When a node is selected, return String to caller
 ) {
     // Mutable .graphicsLayer-based scaling
     var scale by remember {
@@ -44,7 +44,7 @@ fun ComposableTree(
         mutableStateOf(Offset.Zero)
     }
     var selectedValue by remember {
-        mutableStateOf(-1)
+        mutableStateOf(-1f)
     }
 
     val image = if (style.theme.imageId != -1)
@@ -106,7 +106,7 @@ fun ComposableTree(
                         }
                     }
                     onNodeSelect(null)
-                    selectedValue = -1
+                    selectedValue = -1f
 
                 }
             }
@@ -277,7 +277,7 @@ fun ComposableTree(
                      */
                 }
             }
-            if (!selectedFound) selectedValue = -1
+            if (!selectedFound) selectedValue = -1f
         }
     }
 }
