@@ -4,10 +4,8 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import com.nmrc.core.tree.Tree
 import com.nmrc.datastructure.components.tree_screen.domain.BinaryNodeTree
-import com.nmrc.datastructure.components.tree_screen.domain.BinaryTree
 import com.nmrc.datastructure.components.tree_screen.domain.NodeComposableData
-import com.nmrc.datastructure.model.Medicine
-import kotlinx.coroutines.coroutineScope
+import com.nmrc.core.model.Medicine
 
 class TreeViewModel : ViewModel() {
 

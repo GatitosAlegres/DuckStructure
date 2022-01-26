@@ -23,7 +23,7 @@ import com.nmrc.datastructure.components.linkedlist_screen.DataStream
 import com.nmrc.datastructure.components.linkedlist_screen.DoctorCard
 import com.nmrc.datastructure.components.linkedlist_screen.FormDoc
 import com.nmrc.datastructure.components.linkedlist_screen.SortDataStream
-import com.nmrc.datastructure.model.Doctor
+import com.nmrc.core.model.Doctor
 import com.nmrc.datastructure.ui.theme.*
 import com.nmrc.datastructure.util.toList
 import com.nmrc.datastructure.viewmodel.LListViewModel

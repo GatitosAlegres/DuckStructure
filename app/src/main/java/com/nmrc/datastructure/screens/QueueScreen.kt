@@ -26,7 +26,7 @@ import com.nmrc.datastructure.components.queue_screen.FormPatient
 import com.nmrc.datastructure.components.queue_screen.PatientCard
 import com.nmrc.datastructure.components.queue_screen.PatientDataStream
 import com.nmrc.datastructure.components.queue_screen.PatientSortDataStream
-import com.nmrc.datastructure.model.Patient
+import com.nmrc.core.model.Patient
 import com.nmrc.datastructure.ui.theme.*
 import com.nmrc.datastructure.util.toList
 import com.nmrc.datastructure.viewmodel.MainViewModel

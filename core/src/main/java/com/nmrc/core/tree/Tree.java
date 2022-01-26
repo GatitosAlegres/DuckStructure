@@ -4,11 +4,13 @@
 
 package com.nmrc.core.tree;
 
+import com.nmrc.core.model.Medicine;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class Tree<E> {
+public class Tree<E extends Medicine> {
 
     private NodeTree<E> root;
     private Comparator<E> comparator;
@@ -90,11 +92,11 @@ public class Tree<E> {
         }
     }
 
-    public NodeTree<E> binarySearch(E element) {
+    public NodeTree<E> binarySearch(Medicine element) {
         NodeTree<E> aux = root;
         while (aux != null) {
-            if (comparator.compare(element, aux.getElement()) == 0) return aux;
-            else if (comparator.compare(element, aux.getElement()) < 0) aux = aux.getLeft();
+            if (element.getName().equals(aux.getElement().getName())) return aux;
+            else if (comparator.compare((E) element, aux.getElement()) < 0) aux = aux.getLeft();
             else aux = aux.getRight();
         }
         return null;

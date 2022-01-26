@@ -1,4 +1,4 @@
-package com.nmrc.datastructure.model;
+package com.nmrc.core.model;
 
 import java.util.List;
 

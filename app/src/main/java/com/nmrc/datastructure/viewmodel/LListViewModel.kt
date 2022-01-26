@@ -5,7 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.nmrc.core.linkedlist.LinkedList
-import com.nmrc.datastructure.model.Doctor
+import com.nmrc.core.model.Doctor
 
 class LListViewModel : ViewModel() {
 

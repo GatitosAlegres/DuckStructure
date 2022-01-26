@@ -22,11 +22,10 @@ import com.nmrc.datastructure.components.DropDownMenu
 import com.nmrc.datastructure.components.Header
 import com.nmrc.datastructure.components.stack_screen.AppointmentCard
 import com.nmrc.datastructure.components.stack_screen.FormAppointmentD
-import com.nmrc.datastructure.model.Appointment
-import com.nmrc.datastructure.model.AppointmentDetail
-import com.nmrc.datastructure.model.Patient
+import com.nmrc.core.model.Appointment
+import com.nmrc.core.model.AppointmentDetail
+import com.nmrc.core.model.Patient
 import com.nmrc.datastructure.ui.theme.*
-import com.nmrc.datastructure.ui.theme.Gray
 import com.nmrc.datastructure.util.toList
 import com.nmrc.datastructure.viewmodel.MainViewModel
 

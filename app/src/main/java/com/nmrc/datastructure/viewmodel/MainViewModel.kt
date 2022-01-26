@@ -4,11 +4,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.nmrc.core.Structure
 import com.nmrc.core.queue.Queue
 import com.nmrc.core.stack.Stack
-import com.nmrc.datastructure.model.Appointment
-import com.nmrc.datastructure.model.Patient
+import com.nmrc.core.model.Appointment
+import com.nmrc.core.model.Patient
 
 class MainViewModel : ViewModel() {
 

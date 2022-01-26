@@ -22,9 +22,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nmrc.datastructure.components.ActionIconBottom
-import com.nmrc.datastructure.model.Appointment
-import com.nmrc.datastructure.model.AppointmentDetail
-import com.nmrc.datastructure.model.Patient
+import com.nmrc.core.model.Appointment
+import com.nmrc.core.model.AppointmentDetail
+import com.nmrc.core.model.Patient
 import com.nmrc.datastructure.ui.theme.*
 
 

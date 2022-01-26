@@ -1,4 +1,4 @@
-package com.nmrc.datastructure.model;
+package com.nmrc.core.model;
 
 public class Patient extends Person{
 
