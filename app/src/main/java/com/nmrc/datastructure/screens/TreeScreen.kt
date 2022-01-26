@@ -1,6 +1,7 @@
 package com.nmrc.datastructure.screens
 
 
+import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -104,13 +105,14 @@ fun TreeScreen(
                     )
                     viewModel.statusChange()
                 })
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+
             }
         }
 
     }, sheetContent = {
-        // Define the tree as a mutable BinaryNodeTree object
-
-
 
         Scaffold(
             topBar = {

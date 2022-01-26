@@ -76,7 +76,7 @@ fun FormTree(
         ActionIconBottom(
             icon = Icons.Outlined.Done,
             tint = if (isDark) Green else GreenDarkMaterial,
-            content = "Agregar a la Cola",
+            content = "Agregar al Arbol Binario",
             onClick = {
                 add(
                     medicine,
