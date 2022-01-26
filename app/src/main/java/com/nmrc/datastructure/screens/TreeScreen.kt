@@ -159,7 +159,7 @@ fun TreeScreen(
 
                             viewModel.tree.value.remove(selectedIndex)
                             selectedIndex = -1f
-                            viewModel.setData(viewModel.nodeComposableDataList.value)
+                            viewModel.setData(viewModel.tree.value.returnComposableData())
 
                         }
                     )

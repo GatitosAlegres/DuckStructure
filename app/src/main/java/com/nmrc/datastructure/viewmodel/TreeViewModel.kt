@@ -36,8 +36,6 @@ class TreeViewModel : ViewModel() {
         _nodeComposableDataList.value = data as List<NodeComposableData>
     }
 
-
-
     fun statusChange() = count.value++
 
 }
